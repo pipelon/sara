@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use yii\db\mssql\PDO;
+
 class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
 {
     public $id;
@@ -9,6 +11,8 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public $password;
     public $authKey;
     public $accessToken;
+	public $fullName;
+        public $profile_image;
 
     private static $users = [
         '100' => [
@@ -31,9 +35,27 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public static function findIdentity($id)
-    {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+    public static function findIdentity($id) {
+        $fnIdentity = \Yii::$app->session['fnIdentity'];
+        if (empty($fnIdentity)) {
+            $sql = "SELECT id, username, "
+                    . "username as authKey, username as accessToken, "
+                    . "name as fullName, password "
+                    . "FROM users u "
+                    . "WHERE id = :id";
+            $command = \Yii::$app->db->createCommand($sql);
+            $command->bindParam(":id", $id, PDO::PARAM_STR);
+            $user = $command->queryOne();
+            \Yii::$app->session['fnIdentity'] = $user;
+        } else {
+            $user = \Yii::$app->session['fnIdentity'];
+        }
+
+        if ($user) {
+            return new static($user);
+        }
+
+        return null;
     }
 
     /**
@@ -56,12 +78,18 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      * @param string $username
      * @return static|null
      */
-    public static function findByUsername($username)
-    {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
+    public static function findByUsername($username) {
+        $sql = "SELECT id, username, "
+                . "username as authKey, username as accessToken, "
+                . "name as fullName, password "
+                . "FROM users u "
+                . "WHERE username = :username AND active = 1";
+        $command = \Yii::$app->db->createCommand($sql);
+        $command->bindParam(":username", $username, PDO::PARAM_STR);
+        $user = $command->queryOne();
+
+        if ($user) {
+            return new static($user);
         }
 
         return null;
@@ -73,6 +101,28 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public function getId()
     {
         return $this->id;
+    }
+	
+	/**
+     * Retorna el nombre completo del usuario registrado
+     * 
+     * @return string     
+     * @license http://www.opensource.org/licenses/bsd-license.php  BSD License
+     * @version Release: $Id$
+     */
+    public function getFullName() {
+        return $this->fullName;
+    }
+	
+	/**
+     * Retorna los roles de un usuario
+     * 
+     * @return string     
+     * @license http://www.opensource.org/licenses/bsd-license.php  BSD License
+     * @version Release: $Id$
+     */
+    public function getRoles() {
+        return \Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
     }
 
     /**
@@ -97,8 +147,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      * @param string $password password to validate
      * @return bool if password provided is valid for current user
      */
-    public function validatePassword($password)
-    {
-        return $this->password === $password;
+    public function validatePassword($password) {
+        return $this->password === md5($password);
     }
 }

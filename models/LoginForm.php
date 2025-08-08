@@ -34,6 +34,17 @@ class LoginForm extends Model
             ['password', 'validatePassword'],
         ];
     }
+	
+	/**
+     * {@inheritdoc}
+     */
+    public function attributeLabels() {
+        return [
+            'username' => 'Usuario',
+            'password' => 'Clave',
+            'rememberMe' => 'Recuérdame'
+        ];
+    }
 
     /**
      * Validates the password.
@@ -48,7 +59,7 @@ class LoginForm extends Model
             $user = $this->getUser();
 
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
+                $this->addError($attribute, 'username o password incorrectos.');
             }
         }
     }

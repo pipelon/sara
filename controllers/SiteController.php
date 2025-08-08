@@ -12,6 +12,9 @@ use app\models\ContactForm;
 
 class SiteController extends Controller
 {
+	
+		public $enableCsrfValidation = false;
+
     /**
      * {@inheritdoc}
      */
@@ -69,8 +72,7 @@ class SiteController extends Controller
      *
      * @return Response|string
      */
-    public function actionLogin()
-    {
+    public function actionLogin() {
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -82,7 +84,7 @@ class SiteController extends Controller
 
         $model->password = '';
         return $this->render('login', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
 
