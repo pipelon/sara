@@ -9,9 +9,9 @@ $config = [
     'bootstrap' => ['log'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
+        '@npm' => '@vendor/npm-asset',
     ],
-	'modules' => [
+    'modules' => [
         'admin' => [
             'class' => 'mdm\admin\Module',
             'layout' => 'left-menu',
@@ -29,26 +29,24 @@ $config = [
         ]
     ],
     'components' => [
-	
+        'utils' => [
+            'class' => 'app\components\Utils',
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'PJCUIqTWbGDDj9sOsIjczsChqHAXHhE0',
-			'csrfParam' => '_csrf_miproyecto', 
         ],
-		'session' => [
-        'name' => 'PHPSESSID_MIPROYECTO', // nombre único para la cookie de sesión
-    ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-			'identityClass' => 'app\models\User',
-			'enableAutoLogin' => false,
-			'authTimeout' => 1800, // 30 minutos
-		],
-		'errorHandler' => [
-			'errorAction' => 'site/error',
-		],
+            'identityClass' => 'app\models\User',
+            'enableAutoLogin' => false,
+            'authTimeout' => 1800, // 30 minutos
+        ],
+        'errorHandler' => [
+            'errorAction' => 'site/error',
+        ],
         'mailer' => [
             'class' => \yii\symfonymailer\Mailer::class,
             'viewPath' => '@app/mail',
@@ -64,7 +62,7 @@ $config = [
                 ],
             ],
         ],
-		'assetManager' => [
+        'assetManager' => [
             'bundles' => [
                 'kartik\form\ActiveFormAsset' => [
                     'bsDependencyEnabled' => false // do not load bootstrap assets for a specific asset bundle
@@ -72,17 +70,17 @@ $config = [
             ],
         ],
         'db' => $db,
-		'authManager' => [
+        'authManager' => [
             'class' => 'yii\rbac\DbManager',
         ],
-		'view' => [
+        'view' => [
             'theme' => [
                 'pathMap' => [
                     '@vendor/hail812/yii2-adminlte3/src/views' => '@app/views'
                 ],
             ],
         ],
-		'urlManager' => [
+        'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
@@ -90,16 +88,15 @@ $config = [
             ],
         ],
     ],
-	'as access' => [
+    'as access' => [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
             'debug/*',
             'site/login',
-			'site/index',
             'site/logout',
             'gii/*',
             'debug/*',
-            'api/*'
+            'api/*',
         // The actions listed here will be allowed to everyone including guests.
         // So, 'admin/*' should not appear here in the production, of course.
         // But in the earlier stages of your development, you may probably want to
@@ -108,7 +105,7 @@ $config = [
         ]
     ],
     'params' => $params,
-	'language' => 'es',
+    'language' => 'es',
 ];
 
 if (YII_ENV_DEV) {
