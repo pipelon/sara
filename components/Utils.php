@@ -23,7 +23,7 @@ class Utils extends Component {
                 "<span class='badge bg-green'>SI</span>" :
                 "<span class='badge bg-red'>NO</span>";
     }
-    
+
     public function getAccountStatusBadge($condition) {
         return $condition == 1 || strtolower($condition) == 'pagado' ?
                 "<span class='badge bg-green'>Pagado</span>" :
@@ -42,7 +42,14 @@ class Utils extends Component {
             '0' => 'NO',
         ];
     }
-    
+
+    public function getGender() {
+        return [
+            'Macho' => 'Macho',
+            'Hembra' => 'Hembra',
+        ];
+    }
+
     public function getAccountStatus() {
         return [
             '1' => 'Pagado',
