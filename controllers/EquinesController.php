@@ -91,14 +91,14 @@ class EquinesController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
-        
+
         $beforeImage = $model->image_ppal;
 
         if ($model->load(Yii::$app->request->post())) {
 
             // SI ME SUBIERON UNA IMAGEN DEL PRODUCTO            
             $model->image_ppal = \yii\web\UploadedFile::getInstance($model, 'image_ppal');
-            if (!is_null($model->image_ppal)) {                
+            if (!is_null($model->image_ppal)) {
                 $fileName = str_replace(" ", "-", $model->image_ppal->baseName);
                 $fileName = strtolower($fileName) . date('ymdhis') . '.' . strtolower($model->image_ppal->extension);
                 $model->image_ppal->saveAs('images/ejemplares/' . $fileName);
@@ -136,6 +136,15 @@ class EquinesController extends Controller {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionOurEquines() {
+        $model = Equines::findAll(["active" => 1]);
+        $gaits = \app\models\Gaits::find()->all();
+        return $this->render('our-equines', [
+                    'model' => $model,
+                    "gaits" => $gaits,
+        ]);
     }
 
     /**
