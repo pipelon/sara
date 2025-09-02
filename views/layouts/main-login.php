@@ -23,12 +23,12 @@ $this->registerCssFile('https://code.ionicframework.com/ionicons/2.0.1/css/ionic
                 background: #FFFFFF
             }
             .btn.btn-primary.btn-block.btn-login-happiness{
-                background: #D79328;
-                border: 1px solid #D79328;
+                background: #be1e2d;
+                border: 1px solid #be1e2d;
             }
             .icheck-primary > input:first-child:checked + input[type="hidden"] + label::before, .icheck-primary > input:first-child:checked + label::before {
-                background-color: #D79328;
-                border-color: #D79328;
+                background-color: #be1e2d;
+                border-color: #be1e2d;
             }
         </style>
     </head>
@@ -37,10 +37,12 @@ $this->registerCssFile('https://code.ionicframework.com/ionicons/2.0.1/css/ionic
         <div class="login-box">
             <div class="login-logo">
                 <?=
-                \yii\helpers\Html::img("@web/images/HappinessLogoFinalSmall.jpg",
+                \yii\helpers\Html::img("@web/images/logoSara.png",
                         [
-                            'alt' => 'User Image'
-                ])
+                            'alt' => 'Logo Sara',
+                            'width' => '300px'
+                ]
+                        )
                 ?>
             </div>
             <!-- /.login-logo -->

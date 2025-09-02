@@ -197,7 +197,7 @@ CREATE TABLE `menu` (
 
 /*Data for the table `menu` */
 
-insert  into `menu`(`id`,`name`,`parent`,`route`,`order`,`data`) values (1,'Configuración',NULL,NULL,2,'fas fa-toggle-on'),(2,'Roles y accesos',1,'/admin/assignment/index',NULL,'fas fa-user-check'),(3,'Usuarios',1,'/users/index',NULL,'fas fa-users'),(4,'Administración',NULL,NULL,1,NULL),(5,'Marchas',4,'/gaits/index',5,NULL),(6,'Ejemplares',4,'/equines/index',1,NULL),(7,'Categorías',4,'/categories/index',2,NULL),(8,'Subcategorías',4,'/subcategories/index',3,NULL),(9,'Variables',4,'/variables/index',4,NULL);
+insert  into `menu`(`id`,`name`,`parent`,`route`,`order`,`data`) values (1,'Configuración',NULL,NULL,2,'fas fa-tools'),(2,'Roles y accesos',1,'/admin/assignment/index',NULL,'fas fa-user-check'),(3,'Usuarios',1,'/users/index',NULL,'fas fa-users'),(4,'Administración',NULL,NULL,1,'fas fa-toggle-on'),(5,'Marchas',4,'/gaits/index',5,'fas fa-horse'),(6,'Ejemplares',4,'/equines/index',1,'fas fa-horse'),(7,'Categorías',4,'/categories/index',2,'fas fa-list'),(8,'Subcategorías',4,'/subcategories/index',3,'fas fa-list'),(9,'Variables',4,'/variables/index',4,'fas fa-toggle-on');
 
 /*Table structure for table `migration` */
 
