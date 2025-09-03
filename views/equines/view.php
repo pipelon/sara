@@ -58,6 +58,27 @@ $this->params['breadcrumbs'][] = $this->title;
                                     return Yii::$app->utils->getConditional($data->active);
                                 },
                             ],
+                            [
+                                'label' => 'Características',
+                                'format' => 'raw',
+                                'value' => function ($model) {
+                                    $html = "<ul class='list-unstyled'>";
+                                    foreach ($model->variableValues as $vv) {
+                                        $categoria = $vv->subcategory->category->name ?? '-';
+                                        $subcat = $vv->subcategory->name ?? '-';
+                                        $valor = $vv->variable->name ?? '-';
+                                        $num = $vv->variable->value ?? null;
+
+                                        $html .= "<li><strong>{$categoria}</strong> - {$subcat}: {$valor}";
+                                        if ($num !== null) {
+                                            $html .= " ({$num})";
+                                        }
+                                        $html .= "</li>";
+                                    }
+                                    $html .= "</ul>";
+                                    return $html;
+                                }
+                            ],
                             'created',
                             'created_by',
                             'modified',

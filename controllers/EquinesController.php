@@ -73,12 +73,27 @@ class EquinesController extends Controller {
                 $model->image_ppal = $fileName;
             }
             if ($model->save()) {
+
+                // Variables enviadas desde el formulario
+                $variablesData = Yii::$app->request->post('EquineVariables', []);
+
+                foreach ($variablesData as $subcategoryId => $variableId) {
+                    if (!empty($variableId)) {
+                        $ev = new \app\models\EquineVariableValues();
+                        $ev->equine_id = $model->id;
+                        $ev->subcategory_id = $subcategoryId;
+                        $ev->variable_id = $variableId;
+                        $ev->active = 1;
+                        $ev->save();
+                    }
+                }
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
 
         return $this->render('create', [
                     'model' => $model,
+                    'existingValues' => [],
         ]);
     }
 
@@ -91,10 +106,15 @@ class EquinesController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
-
         $beforeImage = $model->image_ppal;
 
-        if ($model->load(Yii::$app->request->post())) {
+        // Traer valores de variables existentes
+        $existingValues = \app\models\EquineVariableValues::find()
+                ->where(['equine_id' => $model->id])
+                ->indexBy('subcategory_id') // clave: subcategoría
+                ->all();
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
             // SI ME SUBIERON UNA IMAGEN DEL PRODUCTO            
             $model->image_ppal = \yii\web\UploadedFile::getInstance($model, 'image_ppal');
@@ -112,6 +132,49 @@ class EquinesController extends Controller {
 
             // si no se cambio la foto entonces sigo con la antigua
             if (empty($model->image_ppal)) {
+
+                // Variables enviadas desde el formulario
+                $variablesData = Yii::$app->request->post('EquineVariables', []);
+
+                // Procesar cada subcategoría recibida
+                foreach ($variablesData as $subcategoryId => $variableId) {
+                    if (empty($variableId)) {
+                        // Usuario quitó la selección
+                        if (isset($existingValues[$subcategoryId])) {
+                            $existingValues[$subcategoryId]->delete();
+                        }
+                        continue;
+                    }
+
+                    if (isset($existingValues[$subcategoryId])) {
+                        // Ya existía → actualizar solo si cambió
+                        $ev = $existingValues[$subcategoryId];
+                        if ($ev->variable_id != $variableId) {
+                            $ev->variable_id = $variableId;
+
+                            $ev->save();
+                        }
+                    } else {
+
+                        // No existía → crear nuevo
+                        $ev = new \app\models\EquineVariableValues();
+                        $ev->equine_id = $model->id;
+                        $ev->subcategory_id = $subcategoryId;
+                        $ev->variable_id = $variableId;
+                        $ev->value = 1;
+                        $ev->active = 1;
+                        $ev->save();
+                    }
+                }
+
+                // Limpiar subcategorías que ya no vienen en el POST
+                $postedSubcats = array_keys($variablesData);
+                foreach ($existingValues as $subcatId => $ev) {
+                    if (!in_array($subcatId, $postedSubcats)) {
+                        $ev->delete();
+                    }
+                }
+
                 $model->image_ppal = $beforeImage;
             }
 
@@ -122,6 +185,7 @@ class EquinesController extends Controller {
 
         return $this->render('update', [
                     'model' => $model,
+                    'existingValues' => $existingValues,
         ]);
     }
 

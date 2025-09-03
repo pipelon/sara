@@ -15,9 +15,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
-                    <?=$this->render('_form', [
-                        'model' => $model
-                    ]) ?>
+                    <?=
+                    $this->render('_form', [
+                        'model' => $model,
+                        'existingValues' => [],
+                    ])
+                    ?>
                 </div>
             </div>
         </div>

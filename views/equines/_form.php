@@ -80,6 +80,55 @@ use yii\bootstrap4\ActiveForm;
 
     <?= $form->field($model, 'active')->dropDownList(Yii::$app->utils->getFilterConditional()); ?>
 
+    <br />
+    <h3>Características</h3>
+    <hr /><br />
+
+    <div class="row">
+        <?php
+        $categories = \app\models\Categories::find()->where(['active' => 1])->all();
+        foreach ($categories as $category):
+            ?>
+            <div class="col-md-4">
+                <div class="card card-outline card-danger mb-3">
+                    <div class="card-header">
+                        <h4 class="card-title"><?= Html::encode($category->name) ?></h4>
+                    </div>
+                    <div class="card-body">
+                        <?php
+                        $subcategories = \app\models\Subcategories::find()
+                                ->where(['category_id' => $category->id, 'active' => 1])
+                                ->all();
+
+                        foreach ($subcategories as $subcat):
+                            $variables = \app\models\Variables::find()
+                                    ->where(['subcategory_id' => $subcat->id, 'active' => 1])
+                                    ->all();
+                            $options = \yii\helpers\ArrayHelper::map($variables, 'id', function($var) {
+                                        return $var->name . ' (' . $var->value . ')';
+                                    });
+
+                            // valor actual si existe
+                            $selected = isset($existingValues[$subcat->id]) ? $existingValues[$subcat->id]->variable_id : null;
+                            ?>
+                            <div class="form-group">
+                                <label><?= Html::encode($subcat->name) ?></label>
+                                <?=
+                                Html::dropDownList(
+                                        "EquineVariables[{$subcat->id}]",
+                                        $selected,
+                                        $options,
+                                        ['class' => 'form-control', 'prompt' => 'Seleccione']
+                                )
+                                ?>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+
     <div class="form-group">
         <?= Html::submitButton('Guardar', ['class' => 'btn btn-danger']) ?>
     </div>

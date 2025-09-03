@@ -20,7 +20,13 @@ $this->registerJsFile(Yii::getAlias('@web') . '/js/our-equines.js', ['depends' =
     }
     .description-block > .description-header {
         font-size: 14px;
+        white-space: nowrap;        /* evita saltos de línea */
+        overflow: hidden;           /* oculta el texto que se desborda */
+        text-overflow: ellipsis;    /* pone "..." al final */
+        max-width: 200px;           /* ajusta al ancho que quieras */
+        display: block;   
     }
+
 </style>
 <div class="container-fluid">
     <div class="row">
@@ -72,7 +78,7 @@ $this->registerJsFile(Yii::getAlias('@web') . '/js/our-equines.js', ['depends' =
                                             </div>
                                             <div class="col-sm-5 border-right">
                                                 <div class="description-block">
-                                                    <h5 class="description-header"><?= $value->gait->name ?></h5>
+                                                    <h5 class="description-header" style=""><?= $value->gait->name ?></h5>
                                                     <span class="description-text">MARCHA</span>
                                                 </div>
                                                 <!-- /.description-block -->

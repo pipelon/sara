@@ -78,7 +78,7 @@ class Equines extends BeforeModel {
             'colletion_days' => 'Días de colecta',
             'about_me' => 'Acerca de mí',
             'history' => 'Mi Historia',
-            'images' => 'Imágenes',            
+            'images' => 'Imágenes',
             'image_ppal' => 'Imagen principal',
             'owner' => 'Propietario',
             'active' => 'Activo',
@@ -96,6 +96,11 @@ class Equines extends BeforeModel {
      */
     public function getGait() {
         return $this->hasOne(Gaits::class, ['id' => 'gait_id']);
+    }
+
+    public function getVariableValues() {
+        return $this->hasMany(\app\models\EquineVariableValues::class, ['equine_id' => 'id'])
+                        ->with(['subcategory.category', 'variable']);
     }
 
 }
