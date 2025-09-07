@@ -57,4 +57,19 @@ class Utils extends Component {
         ];
     }
 
+    public function slugify($text) {
+        // Quitar acentos y normalizar
+        $text = iconv('UTF-8', 'ASCII//TRANSLIT', $text);
+        // Pasar a minúsculas
+        $text = strtolower($text);
+        // Reemplazar espacios por guiones
+        $text = preg_replace('/\s+/', '-', $text);
+        // Eliminar cualquier caracter que no sea letras, números o guiones
+        $text = preg_replace('/[^a-z0-9\-]/', '', $text);
+        // Limpiar guiones duplicados
+        $text = preg_replace('/-+/', '-', $text);
+        // Trim final
+        return trim($text, '-');
+    }
+
 }
