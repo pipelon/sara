@@ -118,9 +118,18 @@ class SiteController extends Controller {
     public function actionAbout() {
         return $this->render('about');
     }
-    
-    public function actionSara (){
-        return $this->render('sara');
+
+    public function actionSara() {
+
+        $model = new \app\models\SaraSearch();
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            var_dump($model);
+        } 
+
+        return $this->render('sara', [
+                    'model' => $model,
+        ]);
     }
 
 }
