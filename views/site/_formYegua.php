@@ -1,5 +1,7 @@
 <?php
+
 use yii\bootstrap4\Html;
+
 $gaits = yii\helpers\ArrayHelper::map(
                 \app\models\Gaits::find()
                         ->orderBy('name ASC')
@@ -8,21 +10,42 @@ $gaits = yii\helpers\ArrayHelper::map(
 ?>
 <div class="row">
     <div class="col-4">        
+
         <?=
-        Html::dropDownList('form[andar]', null, $gaits, [
-            'class' => 'form-control',
-            'prompt' => 'Seleccione una opción'
-        ])
+                $form->field($model, 'form[nombre_yegua]')
+                ->textInput(['placeholder' => 'Nombre de la yegua'])
+                ->label($model->getAttributeLabel('form.nombre_yegua'))
         ?>
-        <label for="nombre_yegua">Nombre</label>
-        <input type="text" class="form-control" id="nombre_yegua" name="form[nombre_yegua]" placeholder="Nombre de la yegua">
+        <?=
+                $form->field($model, 'form[padre]')
+                ->textInput(['placeholder' => 'Nombre del padre'])
+                ->label($model->getAttributeLabel('form.padre'))
+        ?>
     </div>
     <div class="col-4">
-        <label for="registro">Registro</label>
-        <input type="text" class="form-control" id="registro" name="form[registro]" placeholder="Registro">
+        <?=
+                $form->field($model, 'form[registro]')
+                ->textInput(['placeholder' => 'Registro'])
+                ->label($model->getAttributeLabel('form.registro'))
+        ?>
+        <?=
+                $form->field($model, 'form[madre]')
+                ->textInput(['placeholder' => 'Nombre de la madre'])
+                ->label($model->getAttributeLabel('form.madre'))
+        ?>
+
     </div>
     <div class="col-4">
-        <label for="andar">Andar</label>
-        <input type="text" class="form-control" id="andar" name="form[andar]" placeholder="Andar">
+        <?=
+        $form->field($model, 'form[gait_id]')->dropDownList(
+                $gaits,
+                ['prompt' => 'Seleccione una opción']
+        )
+        ?>
+        <?=
+                $form->field($model, 'form[abuelo_materno]')
+                ->textInput(['placeholder' => 'Nombre del abuelo materno'])
+                ->label($model->getAttributeLabel('form.abuelo_materno'))
+        ?>
     </div>
 </div>

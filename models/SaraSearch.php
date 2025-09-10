@@ -6,17 +6,28 @@ use yii\base\Model;
 
 class SaraSearch extends Model {
 
-    public $yegua;       // datos de la yegua
-    public $variables = [];   // sliders (array)
-    public $chk = [];    // checkboxes de mejoramiento
+    public $form = [];   // agrupador
+    public $variables = [];
+    public $chk = [];
 
     public function rules() {
         return [
-            ['chk', 'safe'],
+            [['chk', 'form', 'variables'], 'safe'],
             // Validar checkboxes con regla personalizada
             ['chk', 'validateChk'],
             // Validar sliders como enteros (siempre que vengan en array)
             ['variables', 'each', 'rule' => ['integer', 'min' => 0]],
+        ];
+    }
+
+    public function attributeLabels() {
+        return [
+            'form.registro' => 'Registro',
+            'form.nombre_yegua' => 'Nombre de la yegua',
+            'form.gait_id' => 'Andar',
+            'form.madre' => 'Madre',
+            'form.padre' => 'Padre',
+            'form.abuelo_materno' => 'Abuelo materno',
         ];
     }
 
@@ -27,7 +38,7 @@ class SaraSearch extends Model {
 
         $count = count($value);
 
-        if ($count > 6) {
+        if ($count > 3) {
             $this->addError($attribute, 'Seleccione máximo 6 variables de mejoramiento.');
         }
         if ($count < 1) {
