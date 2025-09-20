@@ -6,6 +6,10 @@ use yii\bootstrap4\ActiveForm;
 $this->title = 'Sara';
 $this->params['breadcrumbs'][] = $this->title;
 
+//VALIDO SI ES UN POST O UNA PRIMERA CARGA
+$isFirstLoad = empty($model->variables) && !$model->hasErrors();
+$this->registerJs("window.isFirstLoad = " . ($isFirstLoad ? "true" : "false") . ";", \yii\web\View::POS_HEAD);
+
 // ARCHIVO CON TODOS LOS JS NECESARIOS PARA LA BUSAUEDA
 $this->registerJsFile(Yii::getAlias('@web') . '/js/sara.js', ['depends' => [yii\web\JqueryAsset::className()]]);
 ?>
@@ -13,8 +17,22 @@ $this->registerJsFile(Yii::getAlias('@web') . '/js/sara.js', ['depends' => [yii\
     .labelVariableRange {
         font-size: 12px;
     }
-    .form-group.variable{
+
+    .form-group.variable {
         margin-bottom: 3rem;
+    }
+
+    .h5subtitu::after {
+        content: "";
+        display: block;
+        position: relative;
+        width: 5%;
+        height: 3px;
+        background: #be132d;
+    }
+
+    .h5subtitu.margin-space {
+        margin: 30px 0;
     }
 </style>
 <div class="container-fluid">
@@ -28,8 +46,8 @@ $this->registerJsFile(Yii::getAlias('@web') . '/js/sara.js', ['depends' => [yii\
         </div>
         <div class="card-body">
             <?=
-            $this->render('_formYegua', ['model' => $model, 'form' => $form])
-            ?> 
+                $this->render('_formYegua', ['model' => $model, 'form' => $form])
+                ?>
         </div>
     </div>
 
@@ -40,9 +58,9 @@ $this->registerJsFile(Yii::getAlias('@web') . '/js/sara.js', ['depends' => [yii\
         </div>
         <div class="card-body">
             <?=
-            $this->render('_variables', ['model' => $model, 'form' => $form])
-            ?> 
-        </div>        
+                $this->render('_variables', ['model' => $model, 'form' => $form])
+                ?>
+        </div>
     </div>
 
     <!-- MEJORAMIENTO DEL REPRODUCTOR -->
@@ -52,15 +70,16 @@ $this->registerJsFile(Yii::getAlias('@web') . '/js/sara.js', ['depends' => [yii\
         </div>
         <div class="card-body">
             <?=
-            $this->render('_mejoramiento', ['model' => $model, 'form' => $form])
-            ?>                 
-        </div>        
+                $this->render('_mejoramiento', ['model' => $model, 'form' => $form])
+                ?>
+        </div>
     </div>
 
     <!-- BOTON BUSCADOR -->
     <div class="card">
         <div class="card-footer">
-            <?= Html::submitButton('Buscar', ['class' => 'btn btn-danger']) ?>
+            <?= Html::submitButton('Buscar', ['class' => 'btn btn-danger', 'name' => 'action', 'value' => 'search']) ?>
+            <?= Html::submitButton('Buscar y Guardar', ['class' => 'btn btn-success', 'name' => 'action', 'value' => 'search_and_save']) ?>
         </div>
     </div>
     <?php ActiveForm::end(); ?>
@@ -76,7 +95,7 @@ $this->registerJsFile(Yii::getAlias('@web') . '/js/sara.js', ['depends' => [yii\
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" id="infoModalDescription"></div>            
+            <div class="modal-body" id="infoModalDescription"></div>
         </div>
     </div>
 </div>

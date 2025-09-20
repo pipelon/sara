@@ -4,15 +4,19 @@ namespace app\models;
 
 use yii\base\Model;
 
-class SaraSearch extends Model {
+class SaraSearch extends Model
+{
 
     public $form = [];   // agrupador
     public $variables = [];
     public $chk = [];
 
-    public function rules() {
+    public function rules()
+    {
         return [
             [['chk', 'form', 'variables'], 'safe'],
+            // Validación manual para nombre_yegua y gait_id
+            ['form', 'validateFormFields'],
             // Validar checkboxes con regla personalizada
             ['chk', 'validateChk'],
             // Validar sliders como enteros (siempre que vengan en array)
@@ -20,7 +24,8 @@ class SaraSearch extends Model {
         ];
     }
 
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'form.registro' => 'Registro',
             'form.nombre_yegua' => 'Nombre de la yegua',
@@ -31,14 +36,25 @@ class SaraSearch extends Model {
         ];
     }
 
-    public function validateChk($attribute, $params) {
+    public function validateFormFields($attribute, $params)
+    {
+        if (empty($this->form['nombre_yegua'])) {
+            $this->addError($attribute, 'Debe ingresar el nombre de la yegua');
+        }
+        if (empty($this->form['gait_id'])) {
+            $this->addError($attribute, 'Debe seleccionar un andar');
+        }
+    }
+
+    public function validateChk($attribute, $params)
+    {
         $value = (array) $this->$attribute;
         // Filtrar vacíos (por el hidden input)
         $value = array_filter($value);
 
         $count = count($value);
 
-        if ($count > 3) {
+        if ($count > 6) {
             $this->addError($attribute, 'Seleccione máximo 6 variables de mejoramiento.');
         }
         if ($count < 1) {

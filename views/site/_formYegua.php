@@ -1,51 +1,53 @@
 <?php
 
+use app\models\SaraSearchHistory;
 use yii\bootstrap4\Html;
+use yii\helpers\ArrayHelper;
 
 $gaits = yii\helpers\ArrayHelper::map(
-                \app\models\Gaits::find()
-                        ->orderBy('name ASC')
-                        ->all()
-                , 'id', 'name');
+        \app\models\Gaits::find()
+                ->orderBy('name ASC')
+                ->all()
+        ,
+        'id',
+        'name'
+);
+$histories = SaraSearchHistory::find()
+        ->where(["created_by" => Yii::$app->user->identity->username])
+        ->orderBy(['created' => SORT_DESC])
+        ->limit(10)
+        ->all();
+$options = ArrayHelper::map($histories, 'id', function ($row) {
+        return $row->nombre_yegua . ' (' . $row->gait->name . ', ' . $row->created . ')';
+});
+
 ?>
 <div class="row">
-    <div class="col-4">        
-
-        <?=
-                $form->field($model, 'form[nombre_yegua]')
-                ->textInput(['placeholder' => 'Nombre de la yegua'])
-                ->label($model->getAttributeLabel('form.nombre_yegua'))
-        ?>
-        <?=
-                $form->field($model, 'form[padre]')
-                ->textInput(['placeholder' => 'Nombre del padre'])
-                ->label($model->getAttributeLabel('form.padre'))
-        ?>
-    </div>
-    <div class="col-4">
-        <?=
-                $form->field($model, 'form[registro]')
-                ->textInput(['placeholder' => 'Registro'])
-                ->label($model->getAttributeLabel('form.registro'))
-        ?>
-        <?=
-                $form->field($model, 'form[madre]')
-                ->textInput(['placeholder' => 'Nombre de la madre'])
-                ->label($model->getAttributeLabel('form.madre'))
-        ?>
-
-    </div>
-    <div class="col-4">
-        <?=
-        $form->field($model, 'form[gait_id]')->dropDownList(
-                $gaits,
-                ['prompt' => 'Seleccione una opción']
-        )
-        ?>
-        <?=
-                $form->field($model, 'form[abuelo_materno]')
-                ->textInput(['placeholder' => 'Nombre del abuelo materno'])
-                ->label($model->getAttributeLabel('form.abuelo_materno'))
-        ?>
-    </div>
+        <?php if ($histories): ?>
+                <div class="col-sm-12">
+                        <div class="form-group">
+                                <?= Html::label('Cargar búsqueda previa', 'prevSearch') ?>
+                                <?= Html::dropDownList('prevSearch', null, $options, [
+                                        'prompt' => 'Seleccione búsqueda previa',
+                                        'class' => 'form-control',
+                                        'id' => 'prevSearch'
+                                ]) ?>
+                        </div>
+                </div>
+        <?php endif; ?>
+        <div class="col-sm-6">
+                <?=
+                        $form->field($model, 'form[nombre_yegua]')
+                                ->textInput(['placeholder' => 'Nombre de la yegua'])
+                                ->label($model->getAttributeLabel('form.nombre_yegua'))
+                        ?>
+        </div>
+        <div class="col-sm-6">
+                <?=
+                        $form->field($model, 'form[gait_id]')->dropDownList(
+                                $gaits,
+                                ['prompt' => 'Seleccione una opción']
+                        )->label($model->getAttributeLabel('form.gait_id'))
+                        ?>
+        </div>
 </div>

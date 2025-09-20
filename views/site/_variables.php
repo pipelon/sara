@@ -4,8 +4,6 @@ use yii\bootstrap4\Html;
 ?>
 <div class="row">
 
-
-    <?php //= $form->errorSummary($model, ['class' => 'alert alert-danger'])  ?>
     <?php
     $categories = \app\models\Categories::find()->where(['active' => 1])->orderBy("order ASC")->all();
     foreach ($categories as $category):
@@ -62,22 +60,20 @@ use yii\bootstrap4\Html;
                                     <?= Html::encode($subcat->name) ?>
 
                                 </label>
-                                <!--<input type="range" 
-                                       class="custom-range custom-range-danger" 
-                                       id="customRange-<?php //= $customRangeId;  ?>"
-                                       name="var[<?php //= $customRangeId;  ?>]"
-                                       min="<?php //= min(array_keys($options));  ?>" 
-                                       max="<?php //= max(array_keys($options));  ?>"
-                                       step="1"
-                                       value="">-->
                                 <input type="range" 
                                        class="custom-range custom-range-danger" 
                                        id="customRange-<?= $customRangeId; ?>"
-                                       name="SaraSearch[variables][<?= $customRangeId; ?>]"
+                                       data-input="<?= $customRangeId; ?>"
                                        min="<?= min(array_keys($options)); ?>" 
                                        max="<?= max(array_keys($options)); ?>"
                                        step="1"
                                        value="<?= Html::encode($model->variables[$customRangeId] ?? '') ?>">
+
+                                <input type="hidden"
+                                        id="<?= $customRangeId; ?>"
+                                        name="SaraSearch[variables][<?= $customRangeId; ?>]"
+                                        data-range="customRange-<?= $customRangeId; ?>"
+                                        value="<?= Html::encode($model->variables[$customRangeId] ?? '') ?>">
 
                                 <div class="d-flex justify-content-between px-1">
                                     <?php foreach ($options as $key => $label): ?>                                                    
