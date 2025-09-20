@@ -83,6 +83,24 @@ $this->registerJsFile(Yii::getAlias('@web') . '/js/sara.js', ['depends' => [yii\
         </div>
     </div>
     <?php ActiveForm::end(); ?>
+
+    <?php if (isset($results) && count($results) > 0): ?>
+        <div class="card">
+            <div class="card-body">
+                <?php foreach ($results as $result): ?>
+                    <div class="col-sm-3">
+                        <?= $result->name; ?>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    <?php elseif (isset($results) && count($results)  == 0): ?>
+        <div class="card">
+            <div class="card-body">
+                No se encontraron resultados
+            </div>
+        </div>
+    <?php endif; ?>
 </div>
 
 <!-- MODAL UNICO REUTILIZABLE PARA TODAS LAS VARIABLES, CATEGORIAS Y SUBCATEGORIAS -->
