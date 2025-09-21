@@ -34,6 +34,14 @@ $this->registerJsFile(Yii::getAlias('@web') . '/js/sara.js', ['depends' => [yii\
     .h5subtitu.margin-space {
         margin: 30px 0;
     }
+
+    .sara-tab a.nav-link {
+        color: #495057;
+    }
+
+    .sara-tab a.nav-link.active {
+        color: #be132d;
+    }
 </style>
 <div class="container-fluid">
     <?php $form = ActiveForm::begin(['id' => 'dynamic-form']); ?>
@@ -64,16 +72,15 @@ $this->registerJsFile(Yii::getAlias('@web') . '/js/sara.js', ['depends' => [yii\
     </div>
 
     <!-- MEJORAMIENTO DEL REPRODUCTOR -->
-    <div class="card">
+    <!--<div class="card">
         <div class="card-header">
             <h3 class="card-title">Mejoramiento del reproductor</h3>
         </div>
         <div class="card-body">
-            <?=
-                $this->render('_mejoramiento', ['model' => $model, 'form' => $form])
-                ?>
+            <?php //=$this->render('_mejoramiento', ['model' => $model, 'form' => $form])
+            ?>
         </div>
-    </div>
+    </div>-->
 
     <!-- BOTON BUSCADOR -->
     <div class="card">
@@ -94,7 +101,7 @@ $this->registerJsFile(Yii::getAlias('@web') . '/js/sara.js', ['depends' => [yii\
                 <?php endforeach; ?>
             </div>
         </div>
-    <?php elseif (isset($results) && count($results)  == 0): ?>
+    <?php elseif (isset($results) && count($results) == 0): ?>
         <div class="card">
             <div class="card-body">
                 No se encontraron resultados
