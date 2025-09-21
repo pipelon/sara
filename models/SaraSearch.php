@@ -21,6 +21,8 @@ class SaraSearch extends Model
             ['chk', 'validateChk'],
             // Validar sliders como enteros (siempre que vengan en array)
             ['variables', 'each', 'rule' => ['integer', 'min' => 0]],
+            // Validar caso Dorso - Cruz
+            ['variables', 'validateCruzDorso'],
         ];
     }
 
@@ -59,6 +61,26 @@ class SaraSearch extends Model
         }
         if ($count < 1) {
             $this->addError($attribute, 'Debe seleccionar al menos una variable de mejoramiento.');
+        }
+    }
+
+    public function validateCruzDorso($attribute, $params)
+    {
+        $chk = (array) $this->chk;
+
+        $needsCruzDorso = in_array('chk-linea-superior-cruz', $chk)
+            || in_array('chk-linea-superior-tamano-dorso', $chk);
+
+        if ($needsCruzDorso) {
+            $cruz = $this->variables['linea-superior-cruz'] ?? null;
+            $dorso = $this->variables['linea-superior-tamano-dorso'] ?? null;
+
+            if (empty($cruz) || empty($dorso)) {
+                $this->addError(
+                    'variables',
+                    'Las variables Cruz y Tamaño del Dorso deben tener un valor, porque están relacionadas.'
+                );
+            }
         }
     }
 

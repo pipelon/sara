@@ -47,12 +47,12 @@ class RuleEngine
             'combination' => true,
             'rules' => [
                 '1-1' => [
-                    ['lineaSuperior_cruz' => 1, 'dorso_tamano' => 1],
-                    ['lineaSuperior_cruz' => 2, 'dorso_tamano' => 2],
+                    ['linea-superior-cruz' => 1, 'linea-superior-tamano-dorso' => 1],
+                    ['linea-superior-cruz' => 2, 'linea-superior-tamano-dorso' => 2],
                 ],
                 '1-2' => [
-                    ['lineaSuperior_cruz' => 1, 'dorso_tamano' => 2],
-                    ['lineaSuperior_cruz' => 2, 'dorso_tamano' => 2],
+                    ['linea-superior-cruz' => 1, 'linea-superior-tamano-dorso' => 2],
+                    ['linea-superior-cruz' => 2, 'linea-superior-tamano-dorso' => 2],
                 ],
                 // ...
             ]
@@ -61,27 +61,33 @@ class RuleEngine
 
     public function getAllowedValues(string $key, string $gait, array $variables): array
     {
-        if (!isset($this->rules[$key]) && !isset($this->rules[$key][$gait])) {
+        if (isset($this->rules[$key][$gait])) {
+            $rule = $this->rules[$key][$gait];
+        } elseif (isset($this->rules[$key])) {
+            $rule = $this->rules[$key];
+        } else {
             return [];
         }
 
-        if (isset($this->rules[$key][$gait])) {           
-            $rule = $this->rules[$key][$gait];
-        } else {
-            $rule = $this->rules[$key];
-        }
-        
-
         // Caso compuesto
-        if (!empty($rule['combination'])) {
-            // ej: "1-2"
-            $comboKey = implode('-', $variables);
+        if (!empty($rule['combination']) && isset($rule['rules'])) {
+
+            // $variables[$key] debe ser un array asociativo con los sub-slugs en el orden esperado
+            if (!isset($variables[$key]) || !is_array($variables[$key])) {
+                return [];
+            }
+            // construir comboKey respetando el orden de los valores en el array compuesto
+            // (array_values respeta el orden de inserción, por eso extractVariables debe insertarlos en el orden correcto)
+            $comboKey = implode('-', array_values($variables[$key]));
             return $rule['rules'][$comboKey] ?? [];
         }
 
         echo $key . "<br>";
         // Caso simple
-        $valor = $variables[$key];
+        $valor = $variables[$key] ?? null;
+        if ($valor === null) {
+            return [];
+        }
         echo $valor . "<br>";
         return $rule[$valor] ?? [];
     }

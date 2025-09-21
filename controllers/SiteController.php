@@ -170,7 +170,7 @@ class SiteController extends Controller
             // Aplicar condiciones al query
             $this->applyConditions($query, $engine, $gaitName, $variables, $improveKeys, $slugMap);
 
-            var_dump($query->createCommand()->getRawSql());
+            //echo "<pre>";echo ($query->createCommand()->getRawSql()); echo "</pre>";
             $results = $query->all();
 
             return $this->render('sara', [
@@ -205,21 +205,23 @@ class SiteController extends Controller
                 continue;
             }
 
-            if (!isset($slugMap[$key])) {
-                continue;
-            }
-            $subcategoryId = $slugMap[$key];
+            // detectar caso compuesto: allowed[] es array de pares asociativos (ej: ['linea-superior-cruz' => 1, 'linea-superior-tamano-dorso' => 2])
+            $isComposite = isset($allowed[0]) && is_array($allowed[0]) && count(array_filter(array_keys($allowed[0]), 'is_string')) > 0
+                && count($allowed[0]) > 1;
 
             // Caso compuesto
-            if (isset($allowed[0]) && is_array($allowed[0]) && count($allowed[0]) > 1) {
+            if ($isComposite) {
                 $or = ['or'];
                 foreach ($allowed as $pair) {
                     $and = ['and'];
-                    foreach ($pair as $subKey => $val) {
-                        if (!isset($slugMap[$subKey])) {
-                            continue;
+                    $skipPair = false;
+                    foreach ($pair as $subSlug => $val) {
+                        if (!isset($slugMap[$subSlug])) {
+                            $skipPair = true;
+                            break;
                         }
-                        $subId = $slugMap[$subKey];
+                        $subId = $slugMap[$subSlug];
+
                         $subQ = (new \yii\db\Query())
                             ->select(new \yii\db\Expression('1'))
                             ->from('equine_variable_values ev')
@@ -227,16 +229,25 @@ class SiteController extends Controller
                             ->where('ev.equine_id = e.id')
                             ->andWhere([
                                 'ev.subcategory_id' => $subId,
-                                'v.value' => $val   // 🔹 usamos value en vez de id
+                                'v.value' => $val
                             ]);
+
                         $and[] = ['exists', $subQ];
                     }
-                    $or[] = $and;
+                    if (!$skipPair) {
+                        $or[] = $and;
+                    }
                 }
-                $query->andWhere($or);
-
-                // Caso simple
+                // si quedó solo ['or'] (ningún pair válido) => skip
+                if (count($or) > 1) {
+                    $query->andWhere($or);
+                }
             } else {
+
+                if (!isset($slugMap[$key])) {
+                    continue;
+                }
+                $subcategoryId = $slugMap[$key];
                 $varValues = $allowed[0]['variable_id'] ?? $allowed['variable_id'] ?? [];
                 $subQ = (new \yii\db\Query())
                     ->select(new \yii\db\Expression('1'))
@@ -272,26 +283,45 @@ class SiteController extends Controller
 
     private function saveSearchHistory($model): void
     {
+
+        $variables = array_filter($model->variables, function ($value) {
+            return $value !== null && $value !== '';
+        });
         $history = new SaraSearchHistory();
         $history->created_by = Yii::$app->user->identity->username;
         $history->created = date('Y-m-d H:i:s');
         $history->nombre_yegua = $model->form['nombre_yegua'] ?? '';
         $history->gait_id = $model->form['gait_id'] ?? null;
-        $history->variables = json_encode($model->variables);
+        $history->variables = json_encode($variables);
         $history->chk = json_encode($model->chk);
         $history->save();
     }
 
     private function extractVariables($model): array
     {
-        $variables = [];
+        $variables = $improveKeys = [];
+        $boolDorsoCruz = false;
         foreach ($model->chk as $chkId) {
             $key = str_replace('chk-', '', $chkId); // ej: "tamano-y-forma-corporal-figura"
+
+            // Caso especial: cruz + dorso
+            if (in_array($key, ['linea-superior-cruz', 'linea-superior-tamano-dorso'])) {
+                if (!$boolDorsoCruz) {
+                    $variables['dorso_cruz'] = [
+                        'linea-superior-cruz' => $model->variables['linea-superior-cruz'] ?? null,
+                        'linea-superior-tamano-dorso' => $model->variables['linea-superior-tamano-dorso'] ?? null,
+                    ];
+                    $improveKeys[] = 'dorso_cruz';
+                    $boolDorsoCruz = true;
+                }
+                continue;
+            }
+
             if (isset($model->variables[$key])) {
                 $variables[$key] = $model->variables[$key];
+                $improveKeys[] = $key;
             }
         }
-        $improveKeys = array_filter($model->chk);
 
         $mareData = $model->form;
         $gait = Gaits::findOne($mareData['gait_id']);
