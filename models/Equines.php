@@ -29,19 +29,22 @@ use Yii;
  *
  * @property Menu $gait
  */
-class Equines extends BeforeModel {
+class Equines extends BeforeModel
+{
 
     /**
      * {@inheritdoc}
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'equines';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['location', 'stud_farm', 'vet', 'colletion_days', 'image_ppal', 'images', 'owner'], 'default', 'value' => null],
             [['gait_id', 'name', 'gender', 'age', 'color', 'about_me', 'history', 'active'], 'required'],
@@ -52,7 +55,9 @@ class Equines extends BeforeModel {
             [['gender'], 'string', 'max' => 20],
             [['color', 'created_by', 'modified_by'], 'string', 'max' => 50],
             [['stud_farm', 'vet', 'colletion_days', 'owner', 'image_ppal'], 'string', 'max' => 200],
-            [['image_ppal'], 'file',
+            [
+                ['image_ppal'],
+                'file',
                 'extensions' => 'png, jpg, jpeg',
                 'mimeTypes' => 'image/jpeg, image/png',
                 'maxSize' => 153600 //150KB
@@ -64,7 +69,8 @@ class Equines extends BeforeModel {
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => 'ID',
             'gait_id' => 'Marcha',
@@ -94,13 +100,15 @@ class Equines extends BeforeModel {
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getGait() {
+    public function getGait()
+    {
         return $this->hasOne(Gaits::class, ['id' => 'gait_id']);
     }
 
-    public function getVariableValues() {
+    public function getVariableValues()
+    {
         return $this->hasMany(\app\models\EquineVariableValues::class, ['equine_id' => 'id'])
-                        ->with(['subcategory.category', 'variable']);
+            ->with(['subcategory.category', 'variable']);
     }
 
 }

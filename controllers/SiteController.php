@@ -149,12 +149,6 @@ class SiteController extends Controller
             // Solo quedarte con sliders que además tengan su check seleccionado
             [$variables, $improveKeys, $gaitId, $gaitName] = $this->extractVariables($model);
 
-            var_dump($variables);
-            var_dump($improveKeys);
-            var_dump($gaitId);
-            var_dump($gaitName);
-
-
             // Sara Rules
             $engine = new RuleEngine();
             // Sara variables in Ids
@@ -176,6 +170,10 @@ class SiteController extends Controller
             return $this->render('sara', [
                 'model' => $model,
                 'results' => $results,
+                'slugMap' => $slugMap,
+                'improveKeys' => $improveKeys,
+                'variables' => $variables,
+                'gaitName' => $gaitName
             ]);
 
         }

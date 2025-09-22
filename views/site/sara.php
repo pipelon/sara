@@ -94,11 +94,9 @@ $this->registerJsFile(Yii::getAlias('@web') . '/js/sara.js', ['depends' => [yii\
     <?php if (isset($results) && count($results) > 0): ?>
         <div class="card">
             <div class="card-body">
-                <?php foreach ($results as $result): ?>
-                    <div class="col-sm-3">
-                        <?= $result->name; ?>
-                    </div>
-                <?php endforeach; ?>
+                <?=
+                $this->render('_results', ['model' => $model, 'results' => $results, 'slugMap' => $slugMap, 'improveKeys' => $improveKeys, 'variables' => $variables, 'gaitName' => $gaitName])
+                ?>
             </div>
         </div>
     <?php elseif (isset($results) && count($results) == 0): ?>
