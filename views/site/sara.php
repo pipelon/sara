@@ -12,36 +12,12 @@ $this->registerJs("window.isFirstLoad = " . ($isFirstLoad ? "true" : "false") . 
 
 // ARCHIVO CON TODOS LOS JS NECESARIOS PARA LA BUSAUEDA
 $this->registerJsFile(Yii::getAlias('@web') . '/js/sara.js', ['depends' => [yii\web\JqueryAsset::className()]]);
+
+//ARCHIVO CON EL CSS
+$this->registerCssFile(Yii::getAlias('@web') . '/css/result-sara.css');
 ?>
 <style type="text/css">
-    .labelVariableRange {
-        font-size: 12px;
-    }
 
-    .form-group.variable {
-        margin-bottom: 3rem;
-    }
-
-    .h5subtitu::after {
-        content: "";
-        display: block;
-        position: relative;
-        width: 5%;
-        height: 3px;
-        background: #be132d;
-    }
-
-    .h5subtitu.margin-space {
-        margin: 30px 0;
-    }
-
-    .sara-tab a.nav-link {
-        color: #495057;
-    }
-
-    .sara-tab a.nav-link.active {
-        color: #be132d;
-    }
 </style>
 <div class="container-fluid">
     <?php $form = ActiveForm::begin(['id' => 'dynamic-form']); ?>
@@ -71,17 +47,6 @@ $this->registerJsFile(Yii::getAlias('@web') . '/js/sara.js', ['depends' => [yii\
         </div>
     </div>
 
-    <!-- MEJORAMIENTO DEL REPRODUCTOR -->
-    <!--<div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Mejoramiento del reproductor</h3>
-        </div>
-        <div class="card-body">
-            <?php //=$this->render('_mejoramiento', ['model' => $model, 'form' => $form])
-            ?>
-        </div>
-    </div>-->
-
     <!-- BOTON BUSCADOR -->
     <div class="card">
         <div class="card-footer">
@@ -91,12 +56,23 @@ $this->registerJsFile(Yii::getAlias('@web') . '/js/sara.js', ['depends' => [yii\
     </div>
     <?php ActiveForm::end(); ?>
 
+
+    <!-- RESULTADOS Y COMPARATIVOS -->
     <?php if (isset($results) && count($results) > 0): ?>
         <div class="card">
             <div class="card-body">
                 <?=
-                $this->render('_results', ['model' => $model, 'results' => $results, 'slugMap' => $slugMap, 'improveKeys' => $improveKeys, 'variables' => $variables, 'gaitName' => $gaitName])
-                ?>
+                    $this->render('_results', [
+                        'model' => $model,
+                        'results' => $results,
+                        'variables' => $variables,
+                        'gaitName' => $gaitName,
+                        'engine' => $engine,
+                        'orderedSubs' => $orderedSubs,
+                        'horseValues' => $horseValues,
+                        'reverseSlugMap' => $reverseSlugMap,
+                    ])
+                    ?>
             </div>
         </div>
     <?php elseif (isset($results) && count($results) == 0): ?>
@@ -106,6 +82,7 @@ $this->registerJsFile(Yii::getAlias('@web') . '/js/sara.js', ['depends' => [yii\
             </div>
         </div>
     <?php endif; ?>
+
 </div>
 
 <!-- MODAL UNICO REUTILIZABLE PARA TODAS LAS VARIABLES, CATEGORIAS Y SUBCATEGORIAS -->

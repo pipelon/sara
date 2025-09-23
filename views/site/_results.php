@@ -3,73 +3,51 @@
 use app\components\RuleEngine;
 use yii\bootstrap4\Html;
 
-// 1) armar lista de subcategorías seleccionadas en el mismo orden
-$subsIndex = \app\models\Subcategories::find()
-    ->with('category')
-    ->indexBy('id')
-    ->all();
-
-$orderedSubs = [];
-foreach ($improveKeys as $slug) {
-    // ignorar casos compuestos (ej. 'dorso_cruz'), no son subcategorías directas
-    if ($slug === 'dorso_cruz') {
-        continue;
-    }
-    if (isset($slugMap[$slug]) && isset($subsIndex[$slugMap[$slug]])) {
-        $orderedSubs[] = $subsIndex[$slugMap[$slug]];
-    }
-}
-
-// 2) construir mapa de valores de caballos para búsqueda rápida
-$horseValues = [];
-foreach ($results as $horse) {
-    $map = [];
-    foreach ($horse->variableValues as $ev) {
-        $map[$ev->subcategory_id] = $ev;
-    }
-    $horseValues[$horse->id] = $map;
-}
-
-$engine = new RuleEngine();
-
 function getMatchQuality($slug, $horseValue, $variables, $gaitName, RuleEngine $engine)
 {
-    // allowed puede venir como simple o compuesto
     $allowed = $engine->getAllowedValues($slug, $gaitName, $variables);
-
     if (empty($allowed)) {
         return null;
     }
 
-    // Caso simple: ['variable_id' => [2,3]]
+    // caso simple
     if (isset($allowed['variable_id'])) {
         $opts = $allowed['variable_id'];
-
-        if (is_array($opts)) {
-            // si hay orden → primero es verde, resto naranja
-            $first = reset($opts);
-            if ($horseValue == $first) {
-                return 'green';
-            } elseif (in_array($horseValue, $opts)) {
-                return 'orange';
-            }
-        }
+        $first = reset($opts);
+        if ($horseValue == $first)
+            return '#2ecc71';
+        if (in_array($horseValue, $opts))
+            return 'orange';
     }
 
-    // Caso extendido: puede traer 'equal' => true
+    // caso extendido con equal
     if (isset($allowed[0]['variable_id'])) {
         $opts = $allowed[0]['variable_id'];
         $equal = $allowed[0]['equal'] ?? false;
-
-        if ($equal && in_array($horseValue, $opts)) {
-            return 'green';
-        }
+        if ($equal && in_array($horseValue, $opts))
+            return '#2ecc71';
         $first = reset($opts);
-        if ($horseValue == $first) {
-            return 'green';
-        } elseif (in_array($horseValue, $opts)) {
+        if ($horseValue == $first)
+            return '#2ecc71';
+        if (in_array($horseValue, $opts))
             return 'orange';
+    }
+
+    // caso compuesto dorso_cruz
+    if ($slug === 'dorso_cruz' && is_array($horseValue)) {
+        // $horseValue = ['linea-superior-cruz' => X, 'linea-superior-tamano-dorso' => Y]
+        foreach ($allowed as $pair) {
+            $ok = true;
+            foreach ($pair as $subSlug => $expected) {
+                if (($horseValue[$subSlug] ?? null) != $expected) {
+                    $ok = false;
+                    break;
+                }
+            }
+            if ($ok)
+                return '#2ecc71'; // match exacto
         }
+        return 'orange';
     }
 
     return null;
@@ -77,21 +55,17 @@ function getMatchQuality($slug, $horseValue, $variables, $gaitName, RuleEngine $
 
 ?>
 <div class="table-responsive">
-    <table class="table table-striped text-successtable-border border-light">
+    <table class="table table-striped text-successtable-border border-light table-bordered table-result-sara">
         <thead class="border-light">
             <tr>
-                <th scope="col"></th>
-                <?php foreach ($results as $result):
-
-
-
-
+                <th scope="col"><span>VARIABLES <BR> MEJORAMIENTO</span></th>
+                <?php foreach ($results as $horse):
                     ?>
                     <th scope="col">
                         <div class="widget-user-image text-center">
                             <?=
                                 Html::img(
-                                    "@web/images/ejemplares/{$result->image_ppal}",
+                                    "@web/images/ejemplares/{$horse->image_ppal}",
                                     [
                                         'alt' => 'Variable',
                                         'width' => '100px',
@@ -100,40 +74,53 @@ function getMatchQuality($slug, $horseValue, $variables, $gaitName, RuleEngine $
                                 )
                                 ?>
                         </div>
-                        <div class="widget-user-image text-center" style="margin-top: 10px">
-                            <strong>
-                                <?= $result->name; ?>
-                            </strong>
+                        <div class="text-center" style="margin-top: 10px"><strong><?= Html::encode($horse->name) ?></strong>
                         </div>
                     </th>
                 <?php endforeach; ?>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($orderedSubs as $sub): ?>
-                <tr>
-                    <th scope="row">
-                        <?= htmlspecialchars($sub->name) ?>
-                    </th>
-                    <?php foreach ($results as $horse): ?>
-                        <?php
-                        $ev = $horseValues[$horse->id][$sub->id] ?? null;
-                        $valor = $ev ? ($ev->variable->name ? "{$ev->variable->name}-{$ev->variable->value}" : $ev->variable_id) : '-';
+            <?php foreach ($orderedSubs as $item): ?>
+                <?php if ($item['type'] === 'single'): ?>
+                    <?php $sub = $item['sub']; ?>
+                    <tr>
+                        <th scope="row"><?= Html::encode($sub->name) ?></th>
+                        <?php foreach ($results as $horse): ?>
+                            <?php
+                            $ev = $horseValues[$horse->id][$sub->id] ?? null;
+                            $valor = $ev ? ($ev->variable->value ?? null) : null;
+                            $color = $valor ? getMatchQuality($item['slug'], $valor, $variables, $gaitName, $engine) : null;
+                            ?>
+                            <td class="text-center">
+                                <i class="far fa-circle" style="color: <?= $color ?: 'gray' ?>"></i>
+                            </td>
+                        <?php endforeach; ?>
+                    </tr>
+                <?php elseif ($item['type'] === 'composite' && $item['slug'] === 'dorso_cruz'): ?>
+                    <tr>
+                        <th scope="row">Cruz + Dorso</th>
+                        <?php foreach ($results as $horse): ?>
+                            <?php
+                            $cruzId = $reverseSlugMap['linea-superior-cruz'] ?? null;
+                            $dorsoId = $reverseSlugMap['linea-superior-tamano-dorso'] ?? null;
 
-                        $color = null;
-                        if ($ev) {
-                            $slug = array_search($sub->id, $slugMap); // recuperar slug original
-                            if ($slug) {
-                                $color = getMatchQuality($slug, $ev->variable->value ?? null, $variables, $gaitName, $engine);
-                            }
-                        }
-                        ?>
-                        <td class="text-center">
-                            <?php//= htmlspecialchars($valor) ?>
-                            <i class="nav-icon fas fa-fas fa-check-circle" style="color: <?= $color; ?>"></i>
-                        </td>
-                    <?php endforeach; ?>
-                </tr>
+                            $evCruz = $cruzId ? ($horseValues[$horse->id][$cruzId] ?? null) : null;
+                            $evDorso = $dorsoId ? ($horseValues[$horse->id][$dorsoId] ?? null) : null;
+
+                            $valores = [
+                                'linea-superior-cruz' => $evCruz ? ($evCruz->variable->value ?? null) : null,
+                                'linea-superior-tamano-dorso' => $evDorso ? ($evDorso->variable->value ?? null) : null,
+                            ];
+
+                            $color = getMatchQuality('dorso_cruz', $valores, $variables, $gaitName, $engine);
+                            ?>
+                            <td class="text-center">
+                                <i class="far fa-circle" style="color: <?= $color ?: 'gray' ?>"></i>
+                            </td>
+                        <?php endforeach; ?>
+                    </tr>
+                <?php endif; ?>
             <?php endforeach; ?>
         </tbody>
 

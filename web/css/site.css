@@ -1,4 +1,4 @@
-main > .container {
+main>.container {
     padding: 70px 15px 20px;
 }
 
@@ -8,7 +8,7 @@ main > .container {
     height: 60px;
 }
 
-.footer > .container {
+.footer>.container {
     padding-right: 15px;
     padding-left: 15px;
 }
@@ -19,7 +19,8 @@ main > .container {
 }
 
 /* add sorting icons to gridview sort links */
-a.asc:after, a.desc:after {
+a.asc:after,
+a.desc:after {
     content: '';
     left: 3px;
     display: inline-block;
@@ -59,30 +60,98 @@ a.desc:after {
 }
 
 /* align the logout "link" (button in form) of the navbar */
-.nav li > form > button.logout {
+.nav li>form>button.logout {
     padding-top: 7px;
     color: rgba(255, 255, 255, 0.5);
 }
 
 @media(max-width:767px) {
-    .nav li > form > button.logout {
-        display:block;
+    .nav li>form>button.logout {
+        display: block;
         text-align: left;
         width: 100%;
         padding: 10px 0;
     }
 }
 
-.nav > li > form > button.logout:focus,
-.nav > li > form > button.logout:hover {
+.nav>li>form>button.logout:focus,
+.nav>li>form>button.logout:hover {
     text-decoration: none;
     color: rgba(255, 255, 255, 0.75);
 }
 
-.nav > li > form > button.logout:focus {
+.nav>li>form>button.logout:focus {
     outline: none;
 }
 
 .form-group {
     margin-bottom: 1rem;
+}
+
+.labelVariableRange {
+    font-size: 12px;
+}
+
+.form-group.variable {
+    margin-bottom: 3rem;
+}
+
+.h5subtitu::after {
+    content: "";
+    display: block;
+    position: relative;
+    width: 5%;
+    height: 3px;
+    background: #be132d;
+}
+
+.h5subtitu.margin-space {
+    margin: 30px 0;
+}
+
+.sara-tab a.nav-link {
+    color: #495057;
+}
+
+.sara-tab a.nav-link.active {
+    color: #be132d;
+}
+
+.compare-table,
+.table-result-sara {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
+}
+
+.compare-table th,
+.compare-table td,
+.table-result-sara td,
+.table-result-sara th {
+    padding: 15px;
+    vertical-align: middle;
+}
+
+.table-result-sara td i {
+    font-size: 25px;
+}
+
+table.table-result-sara td:first-child,
+table.table-result-sara th:first-child {
+    border-right: 10px solid #dee2e6;
+}
+
+table.table-result-sara thead th:first-child {
+    background: black;
+    vertical-align: middle;
+    color: white;
+}
+
+.table.table-result-sara thead th:first-child span::after {
+    content: "";
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 3px;
+    background: #be132d;
 }

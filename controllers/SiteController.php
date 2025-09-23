@@ -132,6 +132,10 @@ class SiteController extends Controller
         return $this->render('about');
     }
 
+    /**
+     * Summary of actionSara
+     * @return string
+     */
     public function actionSara()
     {
 
@@ -167,13 +171,17 @@ class SiteController extends Controller
             //echo "<pre>";echo ($query->createCommand()->getRawSql()); echo "</pre>";
             $results = $query->all();
 
+            [$orderedSubs, $horseValues, $reverseSlugMap] = $this->getDataResultView($slugMap, $improveKeys, $results);
+
             return $this->render('sara', [
                 'model' => $model,
                 'results' => $results,
-                'slugMap' => $slugMap,
-                'improveKeys' => $improveKeys,
                 'variables' => $variables,
-                'gaitName' => $gaitName
+                'gaitName' => $gaitName,
+                'engine' => $engine,
+                'orderedSubs' => $orderedSubs,
+                'horseValues' => $horseValues,
+                'reverseSlugMap' => $reverseSlugMap,
             ]);
 
         }
@@ -183,6 +191,16 @@ class SiteController extends Controller
         ]);
     }
 
+    /**
+     * applyConditions
+     * @param mixed $query
+     * @param \app\components\RuleEngine $engine
+     * @param string $gaitName
+     * @param array $variables
+     * @param array $improveKeys
+     * @param array $slugMap
+     * @return void
+     */
     private function applyConditions(
         $query,
         RuleEngine $engine,
@@ -261,7 +279,62 @@ class SiteController extends Controller
         }
     }
 
+    /**
+     * Summary of getDataResultView
+     * @param mixed $slugMap
+     * @param mixed $improveKeys
+     * @param mixed $results
+     * @return array<array|null>
+     */
+    private function getDataResultView($slugMap, $improveKeys, $results)
+    {
+        $reverseSlugMap = array_flip($slugMap);
 
+        // traer solo subcategorías seleccionadas (excluyendo compuestas)
+        $selectedIds = [];
+        foreach ($improveKeys as $slug) {
+            if ($slug !== 'dorso_cruz' && isset($slugMap[$slug])) {
+                $selectedIds[] = $slugMap[$slug];
+            } elseif ($slug == 'dorso_cruz') {
+                $selectedIds[] = $slugMap['linea-superior-cruz'];
+                $selectedIds[] = $slugMap['linea-superior-tamano-dorso'];
+            }
+        }
+
+        $subs = Subcategories::find()
+            ->where(['id' => $selectedIds])
+            ->indexBy('id')
+            ->all();
+
+        // mantener orden original de $improveKeys
+        $orderedSubs = [];
+        foreach ($improveKeys as $slug) {
+            if ($slug === 'dorso_cruz') {
+                $orderedSubs[] = ['type' => 'composite', 'slug' => 'dorso_cruz'];
+                continue;
+            }
+            if (isset($slugMap[$slug]) && isset($subs[$slugMap[$slug]])) {
+                $orderedSubs[] = ['type' => 'single', 'slug' => $slug, 'sub' => $subs[$slugMap[$slug]]];
+            }
+        }
+
+        // mapa: [ horseId => [ subcategoryId => EquineVariableValues ] ]
+        $horseValues = [];
+        foreach ($results as $horse) {
+            $map = [];
+            foreach ($horse->variableValues as $ev) {
+                $map[$ev->subcategory_id] = $ev;
+            }
+            $horseValues[$horse->id] = $map;
+        }
+
+        return [$orderedSubs, $horseValues, $reverseSlugMap];
+    }
+
+    /**
+     * Summary of buildSlugMap
+     * @return int[]
+     */
     private function buildSlugMap(): array
     {
         $slugMap = [];
@@ -278,7 +351,12 @@ class SiteController extends Controller
 
         return $slugMap;
     }
-
+    
+    /**
+     * Summary of saveSearchHistory
+     * @param mixed $model
+     * @return void
+     */
     private function saveSearchHistory($model): void
     {
 
@@ -295,6 +373,11 @@ class SiteController extends Controller
         $history->save();
     }
 
+    /**
+     * Summary of extractVariables
+     * @param mixed $model
+     * @return array<array|int|string>
+     */
     private function extractVariables($model): array
     {
         $variables = $improveKeys = [];
@@ -328,6 +411,11 @@ class SiteController extends Controller
         return [$variables, $improveKeys, $gait->id, $gaitName];
     }
 
+    /**
+     * Summary of actionLoadHistory
+     * @param mixed $id
+     * @return Yii\web\Response
+     */
     public function actionLoadHistory($id)
     {
         $history = SaraSearchHistory::findOne($id);

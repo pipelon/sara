@@ -82,13 +82,11 @@ class RuleEngine
             return $rule['rules'][$comboKey] ?? [];
         }
 
-        echo $key . "<br>";
         // Caso simple
         $valor = $variables[$key] ?? null;
         if ($valor === null) {
             return [];
         }
-        echo $valor . "<br>";
         return $rule[$valor] ?? [];
     }
 
