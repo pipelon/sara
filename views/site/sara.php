@@ -71,6 +71,7 @@ $this->registerCssFile(Yii::getAlias('@web') . '/css/result-sara.css');
                         'orderedSubs' => $orderedSubs,
                         'horseValues' => $horseValues,
                         'reverseSlugMap' => $reverseSlugMap,
+                        'slugMap' => $slugMap,
                     ])
                     ?>
             </div>

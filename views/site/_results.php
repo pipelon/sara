@@ -46,6 +46,8 @@ function getMatchQuality($slug, $horseValue, $variables, $gaitName, RuleEngine $
             }
             if ($ok)
                 return '#2ecc71'; // match exacto
+            else return 'orange';
+
         }
         return 'orange';
     }
@@ -102,8 +104,8 @@ function getMatchQuality($slug, $horseValue, $variables, $gaitName, RuleEngine $
                         <th scope="row">Cruz + Dorso</th>
                         <?php foreach ($results as $horse): ?>
                             <?php
-                            $cruzId = $reverseSlugMap['linea-superior-cruz'] ?? null;
-                            $dorsoId = $reverseSlugMap['linea-superior-tamano-dorso'] ?? null;
+                            $cruzId = $slugMap['linea-superior-cruz'] ?? null;
+                            $dorsoId = $slugMap['linea-superior-tamano-dorso'] ?? null;
 
                             $evCruz = $cruzId ? ($horseValues[$horse->id][$cruzId] ?? null) : null;
                             $evDorso = $dorsoId ? ($horseValues[$horse->id][$dorsoId] ?? null) : null;

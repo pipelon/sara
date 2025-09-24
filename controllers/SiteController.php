@@ -182,6 +182,7 @@ class SiteController extends Controller
                 'orderedSubs' => $orderedSubs,
                 'horseValues' => $horseValues,
                 'reverseSlugMap' => $reverseSlugMap,
+                'slugMap' => $slugMap
             ]);
 
         }
@@ -295,9 +296,6 @@ class SiteController extends Controller
         foreach ($improveKeys as $slug) {
             if ($slug !== 'dorso_cruz' && isset($slugMap[$slug])) {
                 $selectedIds[] = $slugMap[$slug];
-            } elseif ($slug == 'dorso_cruz') {
-                $selectedIds[] = $slugMap['linea-superior-cruz'];
-                $selectedIds[] = $slugMap['linea-superior-tamano-dorso'];
             }
         }
 
@@ -309,7 +307,7 @@ class SiteController extends Controller
         // mantener orden original de $improveKeys
         $orderedSubs = [];
         foreach ($improveKeys as $slug) {
-            if ($slug === 'dorso_cruz') {
+            if ($slug === 'dorso_cruz' ) {
                 $orderedSubs[] = ['type' => 'composite', 'slug' => 'dorso_cruz'];
                 continue;
             }
