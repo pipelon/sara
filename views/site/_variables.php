@@ -138,7 +138,7 @@ $categories = \app\models\Categories::find()->where(['active' => 1])->orderBy("o
                                         $options = [];
                                         $i = 1;
                                         foreach ($variables as $var) {
-                                            $options[$i] = $var->name;
+                                            $options[$var->value] = $var->name; // Antes era $options[$i] = $var->name;
                                             $i++;
                                         }
 

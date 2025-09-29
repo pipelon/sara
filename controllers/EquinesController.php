@@ -211,6 +211,13 @@ class EquinesController extends Controller {
         ]);
     }
 
+    public function actionEquineDetail($id) {
+        return $this->render('detail', [
+                    'model' => $this->findModel($id),
+        ]);
+    }
+
+
     /**
      * Finds the Equines model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

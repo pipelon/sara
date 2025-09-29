@@ -18,15 +18,19 @@ $this->registerJsFile(Yii::getAlias('@web') . '/js/our-equines.js', ['depends' =
     .description-text {
         font-size: 12px;
     }
-    .description-block > .description-header {
-        font-size: 14px;
-        white-space: nowrap;        /* evita saltos de línea */
-        overflow: hidden;           /* oculta el texto que se desborda */
-        text-overflow: ellipsis;    /* pone "..." al final */
-        max-width: 200px;           /* ajusta al ancho que quieras */
-        display: block;   
-    }
 
+    .description-block>.description-header {
+        font-size: 14px;
+        white-space: nowrap;
+        /* evita saltos de línea */
+        overflow: hidden;
+        /* oculta el texto que se desborda */
+        text-overflow: ellipsis;
+        /* pone "..." al final */
+        max-width: 200px;
+        /* ajusta al ancho que quieras */
+        display: block;
+    }
 </style>
 <div class="container-fluid">
     <div class="row">
@@ -44,36 +48,40 @@ $this->registerJsFile(Yii::getAlias('@web') . '/js/our-equines.js', ['depends' =
                             <li class="nav-item">
                                 <a class="nav-link filter-tab" href="#" data-filter="hembra">Hembras</a>
                             </li>
-                            <?php foreach ($gaits as $gait) : ?>
+                            <?php foreach ($gaits as $gait): ?>
                                 <li class="nav-item">
-                                    <a class="nav-link filter-tab" 
-                                       href="#" 
-                                       data-filter="<?= preg_replace('/\s+/', '-', strtolower($gait->name)) ?>">
-                                           <?= $gait->name ?>
+                                    <a class="nav-link filter-tab" href="#"
+                                        data-filter="<?= preg_replace('/\s+/', '-', strtolower($gait->name)) ?>">
+                                        <?= $gait->name ?>
                                     </a>
                                 </li>
                             <?php endforeach; ?>
                         </ul>
                     </div>
                     <div class="row">
-                        <?php foreach ($model as $key => $value) : ?>
-                            <div class="col-md-3 horse-card <?= preg_replace('/\s+/', '-', strtolower($value->gender)) ?> <?= preg_replace('/\s+/', '-', strtolower($value->gait->name)) ?>">
+                        <?php foreach ($model as $key => $value): ?>
+                            <div
+                                class="col-md-3 horse-card <?= preg_replace('/\s+/', '-', strtolower($value->gender)) ?> <?= preg_replace('/\s+/', '-', strtolower($value->gait->name)) ?>">
                                 <!-- Widget: user widget style 1 -->
                                 <div class="card card-widget widget-user">
                                     <!-- Add the bg color to the header using any of the bg-* classes -->
                                     <?=
-                                    \yii\helpers\Html::img("@web/images/ejemplares/{$value->image_ppal}",
+                                        \yii\helpers\Html::img(
+                                            "@web/images/ejemplares/{$value->image_ppal}",
                                             [
                                                 'alt' => "{$value->name}",
                                                 'height' => '150px'
                                             ]
-                                    )
-                                    ?>                               
-                                    <div class="card-footer"style="padding-top: 0">
+                                        )
+                                        ?>
+                                    <div class="card-footer" style="padding-top: 0">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <div class="widget-user-header"style="height: 60px">
-                                                    <h3 class="widget-user-username"><?= $value->name; ?></h3>
+                                                <div class="widget-user-header" style="height: 60px">
+                                                    <?= Html::a(
+                                                        '<h3 class="widget-user-username">' . $value->name . '</h3>',
+                                                        ['equine-detail', 'id' => $value->id]
+                                                    ) ?>
                                                 </div>
                                             </div>
                                             <div class="col-sm-5 border-right">

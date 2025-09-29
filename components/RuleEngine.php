@@ -6,19 +6,19 @@ class RuleEngine
 {
     private array $rules = [
         'tamano-y-forma-corporal-figura' => [
-            1 => [['variable_id' => [3, 2]]],
-            2 => [['variable_id' => [1, 3]]],
-            3 => [['variable_id' => [1, 2]]],
+            1 => [['variable_id' => [3, 2], 'equal' => true]],
+            2 => [['variable_id' => [1, 3], 'equal' => true]],
+            3 => [['variable_id' => [1, 2], 'equal' => true]],
         ],
         'tamano-y-forma-corporal-orientacion' => [
-            1 => [['variable_id' => [2, 3]]],
+            1 => [['variable_id' => [3, 2]]],
             2 => [['variable_id' => [3, 2]]],
             3 => [['variable_id' => [3]]],
         ],
         'tamano-y-forma-corporal-horizontal' => [
             1 => [['variable_id' => [3, 2]]],
             2 => [['variable_id' => [3]]],
-            3 => [['variable_id' => [2]]],
+            3 => [['variable_id' => [3]]],
         ],
         'tamano-y-forma-corporal-estatura' => [
             'paso-fino' => [
@@ -42,19 +42,349 @@ class RuleEngine
                 3 => [['variable_id' => [2, 3]]],
             ]
         ],
-
+        'linea-superior-cabeza' => [
+            1 => [['variable_id' => [3, 2]]],
+            2 => [['variable_id' => [3]]],
+            3 => [['variable_id' => [3]]],
+        ],
+        'linea-superior-longitud-cuello' => [
+            1 => [['variable_id' => [3, 2]]],
+            2 => [['variable_id' => [1, 3], 'equal' => true]],
+            3 => [['variable_id' => [2, 1]]],
+        ],
+        'linea-superior-pecho' => [
+            1 => [['variable_id' => [3]]],
+            2 => [['variable_id' => [3, 2]]],
+            3 => [['variable_id' => [3]]],
+        ],
+        'aplomos-anteriores-frontalmente' => [
+            1 => [['variable_id' => [2]]],
+            2 => [['variable_id' => [2]]],
+            3 => [['variable_id' => [2]]],
+        ],
+        'aplomos-anteriores-lateralmente' => [
+            1 => [['variable_id' => [2]]],
+            2 => [['variable_id' => [2]]],
+            3 => [['variable_id' => [2]]],
+        ],
+        'aplomos-posteriores-atras' => [
+            1 => [['variable_id' => [2]]],
+            2 => [['variable_id' => [2]]],
+            3 => [['variable_id' => [2]]],
+        ],
+        'aplomos-posteriores-lateralmente' => [
+            1 => [['variable_id' => [2]]],
+            2 => [['variable_id' => [2]]],
+            3 => [['variable_id' => [2]]],
+        ],
+        'espalda-orientacion' => [
+            'paso-fino' => [
+                1 => [['variable_id' => [1]]],
+                2 => [['variable_id' => [1, 2]]],
+                3 => [['variable_id' => [1]]],
+            ],
+            'trocha' => [
+                1 => [['variable_id' => [3]]],
+                2 => [['variable_id' => [3, 2]]],
+                3 => [['variable_id' => [3, 2]]],
+            ],
+            'trocha-y-galope' => [
+                1 => [['variable_id' => [3]]],
+                2 => [['variable_id' => [3, 2]]],
+                3 => [['variable_id' => [3, 2]]],
+            ],
+            'trote-y-galope' => [
+                1 => [['variable_id' => [3]]],
+                2 => [['variable_id' => [3, 2]]],
+                3 => [['variable_id' => [3, 2]]],
+            ]
+        ],
+        'grupa-longitud' => [
+            1 => [['variable_id' => [3]]],
+            2 => [['variable_id' => [3, 2]]],
+            3 => [['variable_id' => [3]]],
+        ],
+        'grupa-anchura' => [
+            1 => [['variable_id' => [3]]],
+            2 => [['variable_id' => [3, 2]]],
+            3 => [['variable_id' => [3]]],
+        ],
+        'morfometria-cana-anterior' => [
+            'paso-fino' => [
+                1 => [['variable_id' => [1]]],
+                2 => [['variable_id' => [1, 2]]],
+                3 => [['variable_id' => [1, 2]]],
+                4 => [['variable_id' => [1]]],
+            ],
+            'trocha' => [
+                1 => [['variable_id' => [1]]],
+                2 => [['variable_id' => [1, 2]]],
+                3 => [['variable_id' => [1, 2]]],
+                4 => [['variable_id' => [1]]],
+            ],
+            'trocha-y-galope' => [
+                1 => [['variable_id' => [1]]],
+                2 => [['variable_id' => [1, 2]]],
+                3 => [['variable_id' => [1, 2]]],
+                4 => [['variable_id' => [1]]],
+            ],
+            'trote-y-galope' => [
+                1 => [['variable_id' => [1]]],
+                2 => [['variable_id' => [1, 2]]],
+                3 => [['variable_id' => [1, 2]]],
+                4 => [['variable_id' => [1]]],
+            ]
+        ],
+        'morfometria-cana-posterior' => [
+            'paso-fino' => [
+                1 => [['variable_id' => [1]]],
+                2 => [['variable_id' => [1, 2]]],
+                3 => [['variable_id' => [1, 2]]],
+                4 => [['variable_id' => [1]]],
+            ],
+            'trocha' => [
+                1 => [['variable_id' => [1]]],
+                2 => [['variable_id' => [1, 2]]],
+                3 => [['variable_id' => [1, 2]]],
+                4 => [['variable_id' => [1]]],
+            ],
+            'trocha-y-galope' => [
+                1 => [['variable_id' => [1]]],
+                2 => [['variable_id' => [1, 2]]],
+                3 => [['variable_id' => [1, 2]]],
+                4 => [['variable_id' => [1]]],
+            ],
+            'trote-y-galope' => [
+                1 => [['variable_id' => [1]]],
+                2 => [['variable_id' => [1, 2]]],
+                3 => [['variable_id' => [1, 2]]],
+                4 => [['variable_id' => [1]]],
+            ]
+        ],
+        'morfometria-cuartilla-anterior' => [
+            'paso-fino' => [
+                1 => [['variable_id' => [1]]],
+                2 => [['variable_id' => [1, 2]]],
+                3 => [['variable_id' => [1, 2]]],
+                4 => [['variable_id' => [1]]],
+            ],
+            'trocha' => [
+                1 => [['variable_id' => [1]]],
+                2 => [['variable_id' => [1, 2]]],
+                3 => [['variable_id' => [1, 2]]],
+                4 => [['variable_id' => [1]]],
+            ],
+            'trocha-y-galope' => [
+                1 => [['variable_id' => [1]]],
+                2 => [['variable_id' => [1, 2]]],
+                3 => [['variable_id' => [1, 2]]],
+                4 => [['variable_id' => [1]]],
+            ],
+            'trote-y-galope' => [
+                1 => [['variable_id' => [1, 2]]],
+                2 => [['variable_id' => [1]]],
+                3 => [['variable_id' => [1, 2]]],
+                4 => [['variable_id' => [1]]],
+            ]
+        ],
+        'morfometria-cuartilla-posterior' => [
+            'paso-fino' => [
+                1 => [['variable_id' => [1]]],
+                2 => [['variable_id' => [1, 2]]],
+                3 => [['variable_id' => [1, 2]]],
+                4 => [['variable_id' => [1]]],
+            ],
+            'trocha' => [
+                1 => [['variable_id' => [1]]],
+                2 => [['variable_id' => [1, 2]]],
+                3 => [['variable_id' => [1, 2]]],
+                4 => [['variable_id' => [1]]],
+            ],
+            'trocha-y-galope' => [
+                1 => [['variable_id' => [1]]],
+                2 => [['variable_id' => [1, 2]]],
+                3 => [['variable_id' => [1, 2]]],
+                4 => [['variable_id' => [1]]],
+            ],
+            'trote-y-galope' => [
+                1 => [['variable_id' => [1, 2]]],
+                2 => [['variable_id' => [1]]],
+                3 => [['variable_id' => [1, 2]]],
+                4 => [['variable_id' => [1]]],
+            ]
+        ],
+        'morfometria-femur' => [
+            0 => [['variable_id' => [3]]],
+            1 => [['variable_id' => [3, 2]]],
+            2 => [['variable_id' => [3]]],
+            3 => [['variable_id' => [3, 2]]],
+        ],
+        'morfometria-antebrazo' => [
+            'paso-fino' => [
+                1 => [['variable_id' => [3, 2]]],
+                2 => [['variable_id' => [3]]],
+                3 => [['variable_id' => [3]]],
+            ],
+            'trocha' => [
+                1 => [['variable_id' => [3]]],
+                2 => [['variable_id' => [3]]],
+                3 => [['variable_id' => [3, 2]]],
+            ],
+            'trocha-y-galope' => [
+                1 => [['variable_id' => [3]]],
+                2 => [['variable_id' => [3]]],
+                3 => [['variable_id' => [3, 2]]],
+            ],
+            'trote-y-galope' => [
+                1 => [['variable_id' => [3]]],
+                2 => [['variable_id' => [3]]],
+                3 => [['variable_id' => [3, 2]]],
+            ]
+        ],
+        'movimiento-velocidad' => [
+            'paso-fino' => [
+                0 => [['variable_id' => [3]]],
+                1 => [['variable_id' => [3, 2]]],
+                2 => [['variable_id' => [3]]],
+                3 => [['variable_id' => [3, 2]]],
+            ],
+            'trocha' => [
+                0 => [['variable_id' => [3]]],
+                1 => [['variable_id' => [3, 2]]],
+                2 => [['variable_id' => [3]]],
+                3 => [['variable_id' => [3, 2]]],
+            ],
+            'trocha-y-galope' => [
+                0 => [['variable_id' => [3]]],
+                1 => [['variable_id' => [3, 2]]],
+                2 => [['variable_id' => [3]]],
+                3 => [['variable_id' => [3, 2]]],
+            ],
+            'trote-y-galope' => [
+                0 => [['variable_id' => [1]]],
+                1 => [['variable_id' => [0]]],
+                2 => [['variable_id' => [0, 1]]],
+                3 => [['variable_id' => [0, 1, 2]]],
+            ]
+        ],
+        'movimiento-potencia-en-la-pisada' => [
+            'paso-fino' => [
+                0 => [['variable_id' => [3]]],
+                1 => [['variable_id' => [3, 2]]],
+                2 => [['variable_id' => [3]]],
+                3 => [['variable_id' => [2, 3]]],
+            ],
+            'trocha' => [
+                0 => [['variable_id' => [3]]],
+                1 => [['variable_id' => [3, 2]]],
+                2 => [['variable_id' => [3]]],
+                3 => [['variable_id' => [2, 3]]],
+            ],
+            'trocha-y-galope' => [
+                0 => [['variable_id' => [3]]],
+                1 => [['variable_id' => [3, 2]]],
+                2 => [['variable_id' => [3]]],
+                3 => [['variable_id' => [2, 3]]],
+            ],
+            'trote-y-galope' => [
+                0 => [['variable_id' => [3]]],
+                1 => [['variable_id' => [3, 2]]],
+                2 => [['variable_id' => [3]]],
+                3 => [['variable_id' => [2, 3]]],
+            ]
+        ],
+        'movimiento-elevacion-anteriores' => [
+            'paso-fino' => [
+                0 => [['variable_id' => [3]]],
+                1 => [['variable_id' => [2, 3, 1]]],
+                2 => [['variable_id' => [2, 1]]],
+                3 => [['variable_id' => [1, 2]]],
+            ],
+            'trocha' => [
+                0 => [['variable_id' => [3]]],
+                1 => [['variable_id' => [3, 2]]],
+                2 => [['variable_id' => [3]]],
+                3 => [['variable_id' => [3, 2]]],
+            ],
+            'trocha-y-galope' => [
+                0 => [['variable_id' => [3]]],
+                1 => [['variable_id' => [3, 2]]],
+                2 => [['variable_id' => [3]]],
+                3 => [['variable_id' => [3, 2]]],
+            ],
+            'trote-y-galope' => [
+                0 => [['variable_id' => [3]]],
+                1 => [['variable_id' => [3]]],
+                2 => [['variable_id' => [3, 2]]],
+                3 => [['variable_id' => [2, 3]]],
+            ]
+        ],
+        'movimiento-elevacion-posteriores' => [
+            'paso-fino' => [
+                0 => [['variable_id' => [3]]],
+                1 => [['variable_id' => [2, 3, 1]]],
+                2 => [['variable_id' => [2, 1]]],
+                3 => [['variable_id' => [1, 2]]],
+            ],
+            'trocha' => [
+                0 => [['variable_id' => [3]]],
+                1 => [['variable_id' => [3, 2]]],
+                2 => [['variable_id' => [3]]],
+                3 => [['variable_id' => [3, 2]]],
+            ],
+            'trocha-y-galope' => [
+                0 => [['variable_id' => [3]]],
+                1 => [['variable_id' => [3, 2]]],
+                2 => [['variable_id' => [3]]],
+                3 => [['variable_id' => [3, 2]]],
+            ],
+            'trote-y-galope' => [
+                0 => [['variable_id' => [3]]],
+                1 => [['variable_id' => [3]]],
+                2 => [['variable_id' => [3, 2]]],
+                3 => [['variable_id' => [2, 3]]],
+            ]
+        ],
         'dorso_cruz' => [
             'combination' => true,
             'rules' => [
                 '1-1' => [
-                    ['linea-superior-cruz' => 1, 'linea-superior-tamano-dorso' => 1],
                     ['linea-superior-cruz' => 2, 'linea-superior-tamano-dorso' => 2],
+                    ['linea-superior-cruz' => 1, 'linea-superior-tamano-dorso' => 1],
                 ],
                 '1-2' => [
+                    ['linea-superior-cruz' => 2, 'linea-superior-tamano-dorso' => 2],
                     ['linea-superior-cruz' => 1, 'linea-superior-tamano-dorso' => 2],
+                ],
+                '1-3' => [
+                    ['linea-superior-cruz' => 3, 'linea-superior-tamano-dorso' => 3],
+                    ['linea-superior-cruz' => 3, 'linea-superior-tamano-dorso' => 2],
                     ['linea-superior-cruz' => 2, 'linea-superior-tamano-dorso' => 2],
                 ],
-                // ...
+                '2-2' => [
+                    ['linea-superior-cruz' => 2, 'linea-superior-tamano-dorso' => 2],
+                ],
+                '2-1' => [
+                    ['linea-superior-cruz' => 2, 'linea-superior-tamano-dorso' => 2],
+                    ['linea-superior-cruz' => 2, 'linea-superior-tamano-dorso' => 3],
+                ],
+                '2-3' => [
+                    ['linea-superior-cruz' => 3, 'linea-superior-tamano-dorso' => 3],
+                    ['linea-superior-cruz' => 3, 'linea-superior-tamano-dorso' => 2],
+                    ['linea-superior-cruz' => 2, 'linea-superior-tamano-dorso' => 2],
+                ],
+                '3-3' => [
+                    ['linea-superior-cruz' => 3, 'linea-superior-tamano-dorso' => 3],
+                    ['linea-superior-cruz' => 2, 'linea-superior-tamano-dorso' => 2],
+                ],
+                '3-1' => [
+                    ['linea-superior-cruz' => 3, 'linea-superior-tamano-dorso' => 3],
+                    ['linea-superior-cruz' => 2, 'linea-superior-tamano-dorso' => 2],
+                ],
+                '3-2' => [
+                    ['linea-superior-cruz' => 3, 'linea-superior-tamano-dorso' => 3],
+                    ['linea-superior-cruz' => 2, 'linea-superior-tamano-dorso' => 2],
+                ],
             ]
         ]
     ];
