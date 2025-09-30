@@ -49,7 +49,7 @@ class Equines extends BeforeModel
             [['location', 'stud_farm', 'vet', 'colletion_days', 'image_ppal', 'images', 'owner'], 'default', 'value' => null],
             [['gait_id', 'name', 'gender', 'age', 'color', 'about_me', 'history', 'active'], 'required'],
             [['gait_id', 'age', 'active'], 'integer'],
-            [['location', 'about_me', 'history', 'images'], 'string'],
+            [['location', 'about_me', 'history'], 'string'],
             [['created', 'modified'], 'safe'],
             [['name'], 'string', 'max' => 100],
             [['gender'], 'string', 'max' => 20],
@@ -61,6 +61,14 @@ class Equines extends BeforeModel
                 'extensions' => 'png, jpg, jpeg',
                 'mimeTypes' => 'image/jpeg, image/png',
                 'maxSize' => 153600 //150KB
+            ],
+            [
+                ['images'],
+                'file',
+                'extensions' => 'png, jpg, jpeg',
+                'mimeTypes' => 'image/jpeg, image/png',
+                'maxSize' => 153600, // 150 KB
+                'maxFiles' => 10 // máximo 10 imágenes
             ],
             [['gait_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gaits::class, 'targetAttribute' => ['gait_id' => 'id']],
         ];
@@ -84,7 +92,7 @@ class Equines extends BeforeModel
             'colletion_days' => 'Días de colecta',
             'about_me' => 'Acerca de mí',
             'history' => 'Mi Historia',
-            'images' => 'Imágenes',
+            'images' => 'Galería de imágenes',
             'image_ppal' => 'Imagen principal',
             'owner' => 'Propietario',
             'active' => 'Activo',

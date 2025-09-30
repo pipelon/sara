@@ -12,6 +12,68 @@ $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 
+<style>
+    .donut {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 15px;
+        background: conic-gradient(#b22222 calc(var(--percent) * 1%),
+                #eee 0);
+    }
+
+    /* Hueco al centro */
+    .donut::before {
+        content: "";
+        position: absolute;
+        width: 70%;
+        height: 70%;
+        background: #fff;
+        /* color de fondo */
+        border-radius: 50%;
+    }
+
+    /* Número al centro */
+    .donut span {
+        position: relative;
+        font-weight: bold;
+        font-size: 1.2rem;
+        color: black;
+        z-index: 1;
+    }
+
+    /* Nombre debajo */
+    .donut p {
+        text-align: center;
+        font-size: 0.9rem;
+        margin-top: 5px;
+    }
+
+    .var-container {
+        float: left;
+        text-align: center;
+        margin-left: 10px;
+    }
+
+    .nav-tabs.var-detail .nav-link {
+        background-color: #eaeaea;
+        border-radius: 5px !important;
+        padding: 5px 10px !important;
+        font-size: 14px !important;
+        margin: 0 5px;
+        color: black;
+    }
+
+    .nav-tabs.var-detail .nav-link.active {
+        background-color: #be2e1d;
+        color: white !important;
+    }
+</style>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-3">
@@ -75,7 +137,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-9">
             <div class="post">
                 <div class="row mb-3">
-                    <div class="col-sm-6">
+                    <?php
+                    $colPpal = is_null($model->images) ? "12" : "6";
+                    ?>
+                    <div class="col-sm-<?= $colPpal; ?>">
                         <?=
                             Html::img(
                                 "@web/images/ejemplares/{$model->image_ppal}",
@@ -87,56 +152,46 @@ $this->params['breadcrumbs'][] = $this->title;
                             ?>
                     </div>
                     <!-- /.col -->
-                    <div class="col-sm-6">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <?=
-                                    Html::img(
-                                        "@web/images/ejemplares/{$model->image_ppal}",
-                                        [
-                                            'alt' => "{$model->name}",
-                                            'class' => 'img-fluid mb-3'
-                                        ]
-                                    )
-                                    ?>
-                                <?=
-                                    Html::img(
-                                        "@web/images/ejemplares/{$model->image_ppal}",
-                                        [
-                                            'alt' => "{$model->name}",
-                                            'class' => 'img-fluid'
-                                        ]
-                                    )
-                                    ?>
+                    <?php
+                    if (!is_null($model->images)) {
+
+                        ?>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <?php foreach (json_decode($model->images) as $image): ?>
+                                    <div class="col-sm-6">
+                                        <?=
+                                            Html::img(
+                                                "@web/images/ejemplares/{$image}",
+                                                [
+                                                    'alt' => "{$image}",
+                                                    'class' => 'img-fluid mb-3'
+                                                ]
+                                            )
+                                            ?>
+                                    </div>
+                                    <!-- /.col -->
+                                <?php endforeach; ?>
+
                             </div>
-                            <!-- /.col -->
-                            <div class="col-sm-6">
-                                <?=
-                                    Html::img(
-                                        "@web/images/ejemplares/{$model->image_ppal}",
-                                        [
-                                            'alt' => "{$model->name}",
-                                            'class' => 'img-fluid mb-3'
-                                        ]
-                                    )
-                                    ?>
-                                <?=
-                                    Html::img(
-                                        "@web/images/ejemplares/{$model->image_ppal}",
-                                        [
-                                            'alt' => "{$model->name}",
-                                            'class' => 'img-fluid'
-                                        ]
-                                    )
-                                    ?>
-                            </div>
-                            <!-- /.col -->
+                            <!-- /.row -->
                         </div>
-                        <!-- /.row -->
-                    </div>
-                    <!-- /.col -->
+                        <!-- /.col -->
+                        <?php
+                    }
+                    ?>
                 </div>
                 <!-- /.row -->
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <?=
+                        $this->render('_variables', ['model' => $model])
+                        ?>
+
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
@@ -167,3 +222,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <!-- /.col -->
     </div>
 </div>
+
+<script>
+    document.querySelectorAll('.donut').forEach(el => {
+        const value = parseInt(el.dataset.value);
+        const max = parseInt(el.dataset.max);
+        const percent = (value / max) * 100;
+        el.style.setProperty('--percent', percent);
+    });
+</script>

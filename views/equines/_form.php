@@ -16,10 +16,13 @@ use yii\bootstrap4\ActiveForm;
 
     <?php
     $gaits = yii\helpers\ArrayHelper::map(
-                    \app\models\Gaits::find()
-                            ->orderBy('name ASC')
-                            ->all()
-                    , 'id', 'name');
+        \app\models\Gaits::find()
+            ->orderBy('name ASC')
+            ->all()
+        ,
+        'id',
+        'name'
+    );
     ?>
     <?= $form->field($model, 'gait_id')->dropDownList($gaits); ?>
 
@@ -45,36 +48,69 @@ use yii\bootstrap4\ActiveForm;
     <?= $form->field($model, 'history')->textarea(['rows' => 6]) ?>
 
     <?=
-    $model->image_ppal ?
-            Html::img("@web/images/ejemplares/{$model->image_ppal}",
-                    [
-                        'style' => 'width: 100px; heigth: 100px; margin: 30px 0;',
-                        'alt' => 'Imagen del ejemplar',
-                        'class' => 'img-circle'
-                    ]
-            ) : "Sin Imagen"
-    ?>
+        $model->image_ppal ?
+        Html::img(
+            "@web/images/ejemplares/{$model->image_ppal}",
+            [
+                'style' => 'width: 100px; heigth: 100px; margin: 30px 0;',
+                'alt' => 'Imagen del ejemplar',
+                'class' => 'img-circle'
+            ]
+        ) : "Sin Imagen"
+        ?>
     <?=
-    $form->field($model, 'image_ppal')->widget(kartik\file\FileInput::classname(), [
-        'options' => ['accept' => 'image/*'],
-        'pluginOptions' => [
-            'allowedFileExtensions' => ['png', 'jpg', 'jpeg'], // soporta jpeg
-            'removeClass' => 'btn btn-danger',
-            'browseIcon' => '<i class="flaticon-folder"></i> ',
-            'showPreview' => false,
-            'showUpload' => false, // desactiva el botón de upload propio
-            'removeIcon' => '<i class="flaticon-circle"></i> ',
-            'maxFileSize' => 153600, // 150 MB
-            'msgSizeTooLarge' => 'El archivo "{name}" (<b>{size} KB</b>) excede el tamaño máximo permitido de <b>{maxSize} KB</b>.',
-            'msgInvalidFileExtension' => 'Extensión inválida para "{name}". Solo se permiten: {extensions}.',
-            'msgInvalidFileType' => 'Tipo de archivo inválido para "{name}". Solo se aceptan imágenes.',
-            'msgValidationErrorClass' => 'text-danger', // clase CSS para errores
-            'msgErrorClass' => 'alert alert-danger', // estilo bootstrap para mensajes
-        ]
-    ]);
+        $form->field($model, 'image_ppal')->widget(kartik\file\FileInput::classname(), [
+            'options' => ['accept' => 'image/*'],
+            'pluginOptions' => [
+                'allowedFileExtensions' => ['png', 'jpg', 'jpeg'], // soporta jpeg
+                'removeClass' => 'btn btn-danger',
+                'browseIcon' => '<i class="flaticon-folder"></i> ',
+                'showPreview' => false,
+                'showUpload' => false, // desactiva el botón de upload propio
+                'removeIcon' => '<i class="flaticon-circle"></i> ',
+                'maxFileSize' => 153600, // 150 MB
+                'msgSizeTooLarge' => 'El archivo "{name}" (<b>{size} KB</b>) excede el tamaño máximo permitido de <b>{maxSize} KB</b>.',
+                'msgInvalidFileExtension' => 'Extensión inválida para "{name}". Solo se permiten: {extensions}.',
+                'msgInvalidFileType' => 'Tipo de archivo inválido para "{name}". Solo se aceptan imágenes.',
+                'msgValidationErrorClass' => 'text-danger', // clase CSS para errores
+                'msgErrorClass' => 'alert alert-danger', // estilo bootstrap para mensajes
+            ]
+        ]);
     ?>
 
-    <?= $form->field($model, 'images')->textarea(['rows' => 6]) ?>
+    <?php
+    if ($model->images) {
+        foreach (json_decode($model->images) as $image) {
+            echo Html::img(
+                "@web/images/ejemplares/{$image}",
+                [
+                    'style' => 'width: 100px; heigth: 100px; margin: 30px 0;',
+                    'alt' => "{$image}",
+                    'class' => 'img-circle'
+                ]
+            );
+        }
+    } else {
+        echo "Sin Imagen";
+    }
+    ?>
+
+    <?=
+        $form->field($model, 'images[]')->widget(kartik\file\FileInput::classname(), [
+            'options' => [
+                'accept' => 'image/*',
+                'multiple' => true,
+            ],
+            'pluginOptions' => [
+                'allowedFileExtensions' => ['png', 'jpg', 'jpeg'],
+                'showUpload' => false,
+                'showPreview' => false,
+                'browseIcon' => '<i class="flaticon-folder"></i> ',
+                'removeIcon' => '<i class="flaticon-circle"></i> ',
+                'maxFileSize' => 153600,
+            ]
+        ]);
+    ?>
 
     <?= $form->field($model, 'owner')->textInput(['maxlength' => true]) ?>
 
@@ -97,16 +133,16 @@ use yii\bootstrap4\ActiveForm;
                     <div class="card-body">
                         <?php
                         $subcategories = \app\models\Subcategories::find()
-                                ->where(['category_id' => $category->id, 'active' => 1])
-                                ->all();
+                            ->where(['category_id' => $category->id, 'active' => 1])
+                            ->all();
 
                         foreach ($subcategories as $subcat):
                             $variables = \app\models\Variables::find()
-                                    ->where(['subcategory_id' => $subcat->id, 'active' => 1])
-                                    ->all();
-                            $options = \yii\helpers\ArrayHelper::map($variables, 'id', function($var) {
-                                        return $var->name . ' (' . $var->value . ')';
-                                    });
+                                ->where(['subcategory_id' => $subcat->id, 'active' => 1])
+                                ->all();
+                            $options = \yii\helpers\ArrayHelper::map($variables, 'id', function ($var) {
+                                return $var->name . ' (' . $var->value . ')';
+                            });
 
                             // valor actual si existe
                             $selected = isset($existingValues[$subcat->id]) ? $existingValues[$subcat->id]->variable_id : null;
@@ -114,13 +150,13 @@ use yii\bootstrap4\ActiveForm;
                             <div class="form-group">
                                 <label><?= Html::encode($subcat->name) ?></label>
                                 <?=
-                                Html::dropDownList(
+                                    Html::dropDownList(
                                         "EquineVariables[{$subcat->id}]",
                                         $selected,
                                         $options,
                                         ['class' => 'form-control', 'prompt' => 'Seleccione']
-                                )
-                                ?>
+                                    )
+                                    ?>
                             </div>
                         <?php endforeach; ?>
                     </div>
