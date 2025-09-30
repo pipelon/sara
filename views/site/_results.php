@@ -46,7 +46,8 @@ function getMatchQuality($slug, $horseValue, $variables, $gaitName, RuleEngine $
             }
             if ($ok)
                 return '#2ecc71'; // match exacto
-            else return 'orange';
+            else
+                return 'orange';
 
         }
         return 'orange';
@@ -76,7 +77,12 @@ function getMatchQuality($slug, $horseValue, $variables, $gaitName, RuleEngine $
                                 )
                                 ?>
                         </div>
-                        <div class="text-center" style="margin-top: 10px"><strong><?= Html::encode($horse->name) ?></strong>
+                        <div class="text-center" style="margin-top: 10px">
+                            <?= Html::a(
+                                    Html::encode($horse->name),
+                                    ['/equines/equine-detail', 'id' => $horse->id],
+                                    ["style" => "color: #b3132d; font-weight: bold", "target" => "_blank"]
+                                ) ?>
                         </div>
                     </th>
                 <?php endforeach; ?>
