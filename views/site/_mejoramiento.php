@@ -13,7 +13,7 @@ use yii\bootstrap4\Html;
             $form->field($model, 'chk')->checkboxList([
                 'chk-tamano-y-forma-corporal-figura' => 'Figura',
                 'chk-espalda-tamano' => 'Tamaño espalda',
-                'chk-grupa-orientacion' => 'Orientación grupa',
+                'chk-grupa-longitud' => 'Longitud grupa',
                 'chk-aplomos-anteriores-frontalmente' => 'Aplomos anteriores (frente)',
                 'chk-aplomos-anteriores-lateralmente' => 'Aplomos anteriores (Lateral)',
             ], [
@@ -33,7 +33,7 @@ use yii\bootstrap4\Html;
             $form->field($model, 'chk')->checkboxList([
                 'chk-tamano-y-forma-corporal-orientacion' => 'Orientación',
                 'chk-espalda-orientacion' => 'Orientación espalda',
-                'chk-grupa-amplitud' => 'Amplitud grupa',
+                'chk-grupa-anchura' => 'Anchura grupa',
                 'chk-aplomos-posteriores-atras' => 'Aplomos posteriores (Posterior)',
                 'chk-aplomos-posteriores-lateralmente' => 'Aplomos posteriores (Lateral)',
 
@@ -54,7 +54,6 @@ use yii\bootstrap4\Html;
             $form->field($model, 'chk')->checkboxList([
                 'chk-tamano-y-forma-corporal-horizontal' => 'Balance horizontal',
                 'chk-tamano-y-forma-corporal-estatura' => 'Alzada',
-                'chk-grupa-tamano' => 'Tamaño grupa',
             ], [
                 'unselect' => null,
                 'item' => function ($index, $label, $name, $checked, $value) {
@@ -163,6 +162,7 @@ use yii\bootstrap4\Html;
         <?=
             $form->field($model, 'chk')->checkboxList([
                 'chk-morfometria-cuartilla-anterior' => 'Cuartilla anterior',
+                'chk-morfometria-antebrazo' => 'Antebrazo'
             ], [
                 'unselect' => null,
                 'item' => function ($index, $label, $name, $checked, $value) {

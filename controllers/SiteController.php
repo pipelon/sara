@@ -222,9 +222,11 @@ class SiteController extends Controller
                 continue;
             }
 
-            // detectar caso compuesto: allowed[] es array de pares asociativos (ej: ['linea-superior-cruz' => 1, 'linea-superior-tamano-dorso' => 2])
-            $isComposite = isset($allowed[0]) && is_array($allowed[0]) && count(array_filter(array_keys($allowed[0]), 'is_string')) > 0
-                && count($allowed[0]) > 1;
+            $isComposite = isset($allowed[0])
+                && is_array($allowed[0])
+                && count(
+                    array_diff(array_keys($allowed[0]), ['variable_id', 'equal'])
+                ) > 0;
 
             // Caso compuesto
             if ($isComposite) {
@@ -307,7 +309,7 @@ class SiteController extends Controller
         // mantener orden original de $improveKeys
         $orderedSubs = [];
         foreach ($improveKeys as $slug) {
-            if ($slug === 'dorso_cruz' ) {
+            if ($slug === 'dorso_cruz') {
                 $orderedSubs[] = ['type' => 'composite', 'slug' => 'dorso_cruz'];
                 continue;
             }
@@ -349,7 +351,7 @@ class SiteController extends Controller
 
         return $slugMap;
     }
-    
+
     /**
      * Summary of saveSearchHistory
      * @param mixed $model

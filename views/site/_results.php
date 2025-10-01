@@ -93,7 +93,7 @@ function getMatchQuality($slug, $horseValue, $variables, $gaitName, RuleEngine $
                 <?php if ($item['type'] === 'single'): ?>
                     <?php $sub = $item['sub']; ?>
                     <tr>
-                        <th scope="row"><?= Html::encode($sub->name) ?></th>
+                        <th scope="row"><?= Html::encode($sub->name) ?> (<?= $model["variables"][$item['slug']]; ?>)</th>
                         <?php foreach ($results as $horse): ?>
                             <?php
                             $ev = $horseValues[$horse->id][$sub->id] ?? null;
