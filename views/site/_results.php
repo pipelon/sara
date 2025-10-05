@@ -57,6 +57,37 @@ function getMatchQuality($slug, $horseValue, $variables, $gaitName, RuleEngine $
 }
 
 ?>
+<div class="row" style="margin-bottom: 30px;;">
+    <div class="col-sm-12">
+        <p>*Seleccione los ejemplares que desea comparar.</p>        
+    </div>
+    <?php foreach ($results as $horse):
+        ?>
+        <div class="col-sm-2 horse-found" data-horse="<?= Yii::$app->utils->slugify($horse->name); ?>">
+            <div class="widget-user-image text-center">
+                <?=
+                    Html::img(
+                        "@web/images/ejemplares/{$horse->image_ppal}",
+                        [
+                            'alt' => 'Variable',
+                            'width' => '100px',
+                            'class' => 'img-circle elevation-2'
+                        ]
+                    )
+                    ?>
+            </div>
+            <div class="text-center" style="margin-top: 10px">
+                <?= Html::a(
+                    Html::encode($horse->name),
+                    ['/equines/equine-detail', 'id' => $horse->id],
+                    ["style" => "color: #b3132d; font-weight: bold", "target" => "_blank"]
+                ) ?>
+            </div>
+        </div>
+    <?php endforeach; ?>
+</div>
+
+
 <div class="table-responsive">
     <table class="table table-striped text-successtable-border border-light table-bordered table-result-sara">
         <thead class="border-light">
@@ -64,7 +95,7 @@ function getMatchQuality($slug, $horseValue, $variables, $gaitName, RuleEngine $
                 <th scope="col"><span>VARIABLES <BR> MEJORAMIENTO</span></th>
                 <?php foreach ($results as $horse):
                     ?>
-                    <th scope="col">
+                    <th scope="col" data-horse-detail="<?= Yii::$app->utils->slugify($horse->name); ?>">
                         <div class="widget-user-image text-center">
                             <?=
                                 Html::img(
@@ -79,10 +110,10 @@ function getMatchQuality($slug, $horseValue, $variables, $gaitName, RuleEngine $
                         </div>
                         <div class="text-center" style="margin-top: 10px">
                             <?= Html::a(
-                                    Html::encode($horse->name),
-                                    ['/equines/equine-detail', 'id' => $horse->id],
-                                    ["style" => "color: #b3132d; font-weight: bold", "target" => "_blank"]
-                                ) ?>
+                                Html::encode($horse->name),
+                                ['/equines/equine-detail', 'id' => $horse->id],
+                                ["style" => "color: #b3132d; font-weight: bold", "target" => "_blank"]
+                            ) ?>
                         </div>
                     </th>
                 <?php endforeach; ?>
@@ -91,16 +122,21 @@ function getMatchQuality($slug, $horseValue, $variables, $gaitName, RuleEngine $
         <tbody>
             <?php foreach ($orderedSubs as $item): ?>
                 <?php if ($item['type'] === 'single'): ?>
-                    <?php $sub = $item['sub']; ?>
+                    <?php
+                    $sub = $item['sub'];
+                    $mareValue = array_filter($sub->variables, function ($variable) use ($variables, $item) {
+                        return $variable->value == $variables[$item['slug']];
+                    });
+                    ?>
                     <tr>
-                        <th scope="row"><?= Html::encode($sub->name) ?> (<?= $model["variables"][$item['slug']]; ?>)</th>
+                        <th scope="row"><?= Html::encode($sub->name) ?> (<?= reset($mareValue)->name; ?>)</th>
                         <?php foreach ($results as $horse): ?>
                             <?php
                             $ev = $horseValues[$horse->id][$sub->id] ?? null;
                             $valor = $ev ? ($ev->variable->value ?? null) : null;
                             $color = $valor ? getMatchQuality($item['slug'], $valor, $variables, $gaitName, $engine) : null;
                             ?>
-                            <td class="text-center">
+                            <td class="text-center" data-horse-detail="<?= Yii::$app->utils->slugify($horse->name); ?>">
                                 <i class="far fa-circle" style="color: <?= $color ?: 'gray' ?>"></i>
                             </td>
                         <?php endforeach; ?>

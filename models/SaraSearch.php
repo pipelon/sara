@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Yii;
 use yii\base\Model;
 
 class SaraSearch extends Model
@@ -40,8 +41,9 @@ class SaraSearch extends Model
 
     public function validateFormFields($attribute, $params)
     {
-        if (empty($this->form['nombre_yegua'])) {
-            $this->addError($attribute, 'Debe ingresar el nombre de la yegua');
+        $action = Yii::$app->request->post('action');
+        if (empty($this->form['nombre_yegua']) && $action == "search_and_save") {
+            $this->addError($attribute, 'Debe ingresar el nombre de la yegua si deseas guardar tu búsqueda');
         }
         if (empty($this->form['gait_id'])) {
             $this->addError($attribute, 'Debe seleccionar un andar');

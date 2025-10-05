@@ -10,8 +10,9 @@ $categories = \app\models\Categories::find()->where(['active' => 1])->orderBy("o
     <div class="col-5 col-sm-3">
         <div class="nav flex-column nav-tabs h-100 sara-tab" id="vert-tabs-tab" role="tablist"
             aria-orientation="vertical">
-            <a class="nav-link active" id="vert-tabs-home-tab" data-toggle="pill" href="#vert-tabs-home" role="tab"
-                aria-controls="vert-tabs-home" aria-selected="true">¿Cómo usar S. A. R. A.?</a>
+            <a class="nav-link <?= !Yii::$app->request->post() ? 'active' : '' ?>" id="vert-tabs-home-tab"
+                data-toggle="pill" href="#vert-tabs-home" role="tab" aria-controls="vert-tabs-home"
+                aria-selected="true">¿Cómo usar S. A. R. A.?</a>
             <?php foreach ($categories as $category): ?>
                 <?php $slugCat = Yii::$app->utils->slugify($category->name) ?>
                 <a class="nav-link" id="vert-<?= $slugCat; ?>-tab" data-toggle="pill" href="#vert-<?= $slugCat; ?>"
@@ -19,7 +20,7 @@ $categories = \app\models\Categories::find()->where(['active' => 1])->orderBy("o
                     <?= $category->name; ?>
                 </a>
             <?php endforeach; ?>
-            <a class="nav-link" id="vert-tabs-mejoramiento-tab" data-toggle="pill" href="#vert-tabs-mejoramiento"
+            <a class="nav-link <?= Yii::$app->request->post() ? 'active' : '' ?>" id="vert-tabs-mejoramiento-tab" data-toggle="pill" href="#vert-tabs-mejoramiento"
                 role="tab" aria-controls="vert-tabs-mejoramiento" aria-selected="false">
                 MEJORAMIENTO DEL REPRODUCTOR
             </a>
@@ -27,7 +28,7 @@ $categories = \app\models\Categories::find()->where(['active' => 1])->orderBy("o
     </div>
     <div class="col-7 col-sm-9">
         <div class="tab-content" id="vert-tabs-tabContent">
-            <div class="tab-pane text-left fade show active" id="vert-tabs-home" role="tabpanel"
+            <div class="tab-pane text-left fade <?= !Yii::$app->request->post() ? 'show active' : '' ?>" id="vert-tabs-home" role="tabpanel"
                 aria-labelledby="vert-tabs-home-tab">
                 <div class="description">
                     <h3 class="h3subtitu" style="font-weight: bold; font-size: 16px;"></h3>
@@ -196,7 +197,7 @@ $categories = \app\models\Categories::find()->where(['active' => 1])->orderBy("o
                 </div>
             <?php endforeach; ?>
 
-            <div class="tab-pane text-left fade" id="vert-tabs-mejoramiento" role="tabpanel"
+            <div class="tab-pane text-left fade <?= Yii::$app->request->post() ? 'show active' : '' ?>" id="vert-tabs-mejoramiento" role="tabpanel"
                 aria-labelledby="vert-tabs-mejoramiento-tab">
                 <?= $this->render('_mejoramiento', ['model' => $model, 'form' => $form])
                     ?>

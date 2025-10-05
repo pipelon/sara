@@ -78,4 +78,15 @@ jQuery("document").ready(function () {
       "json"
     );
   });
+
+  $(".horse-found").on("click", function() {
+    const horseName = $(this).data("horse"); // e.g. "Rastastas"
+    
+    // selecciona todos los elementos con ese data-horse-detail
+    const $col = $(`[data-horse-detail="${horseName}"]`);
+    
+    // alterna su visibilidad
+    $col.toggle();
+  });
+
 });

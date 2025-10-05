@@ -2,6 +2,12 @@
 
 use yii\bootstrap4\Html;
 ?>
+<style>
+    .custom-control-input:disabled~.custom-control-label,
+    .custom-control-input[disabled]~.custom-control-label {
+        color: #dddfe1;
+    }
+</style>
 <div class="row">
     <div class="col-sm-12">
         <p>*Seleccione máximo 6 características en el orden de prioridad de mejoramiento.</p>

@@ -16,9 +16,7 @@ $this->registerJsFile(Yii::getAlias('@web') . '/js/sara.js', ['depends' => [yii\
 //ARCHIVO CON EL CSS
 $this->registerCssFile(Yii::getAlias('@web') . '/css/result-sara.css');
 ?>
-<style type="text/css">
 
-</style>
 <div class="container-fluid">
     <?php $form = ActiveForm::begin(['id' => 'dynamic-form']); ?>
     <?= $form->errorSummary($model, ['class' => 'alert alert-danger']) ?>
