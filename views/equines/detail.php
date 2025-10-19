@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Equines */
@@ -129,6 +128,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     <!--<a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>-->
                 </div>
                 <!-- /.card-body -->
+                 <?=
+                        Html::img(
+                            "@web/images/radar-ejemplo.png",
+                            [
+                                'alt' => "radar-ejemplo.png",
+                                'height' => 'auto',
+                            ]
+                        )
+                        ?>
             </div>
             <!-- /.card -->
 
@@ -184,15 +192,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 <!-- /.row -->
             </div>
 
-            <div class="row">
+            
+
+            <!--<div class="row">
                 <div class="col-md-12">
-
-                    <?=
-                        $this->render('_variables', ['model' => $model])
-                        ?>
-
+                    <?php // $this->render('_variables', ['model' => $model]) ?>
                 </div>
-            </div>
+            </div>-->
             <div class="row">
                 <div class="col-md-6">
                     <div class="card">
@@ -216,11 +222,23 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
 
-
             <!-- /.card -->
         </div>
         <!-- /.col -->
     </div>
+    <div class="card card-danger">
+        <div class="card-header">
+            <h3 class="card-title">Información de las crías</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <?= $this->render('_charts', ['model' => $model]) ?>
+            </div>
+
+        </div>
+        <!-- /.card-body -->
+    </div>
+
 </div>
 
 <script>

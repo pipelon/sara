@@ -59,29 +59,27 @@ function getMatchQuality($slug, $horseValue, $variables, $gaitName, RuleEngine $
 ?>
 <div class="row" style="margin-bottom: 30px;;">
     <div class="col-sm-12">
-        <p>*Seleccione los ejemplares que desea comparar.</p>        
+        <p>*Seleccione los ejemplares que desea comparar.</p>
     </div>
     <?php foreach ($results as $horse):
         ?>
         <div class="col-sm-2 horse-found" data-horse="<?= Yii::$app->utils->slugify($horse->name); ?>">
-            <div class="widget-user-image text-center">
-                <?=
-                    Html::img(
-                        "@web/images/ejemplares/{$horse->image_ppal}",
-                        [
-                            'alt' => 'Variable',
-                            'width' => '100px',
-                            'class' => 'img-circle elevation-2'
-                        ]
-                    )
-                    ?>
-            </div>
-            <div class="text-center" style="margin-top: 10px">
-                <?= Html::a(
-                    Html::encode($horse->name),
-                    ['/equines/equine-detail', 'id' => $horse->id],
-                    ["style" => "color: #b3132d; font-weight: bold", "target" => "_blank"]
-                ) ?>
+            <div class="horse-card">
+                <div class="widget-user-image horse-img">
+                    <?=
+                        Html::img(
+                            "@web/images/ejemplares/{$horse->image_ppal}",
+                            [
+                                'alt' => 'Variable',
+                                'width' => '25px',
+                                'class' => 'img-circle elevation-2'
+                            ]
+                        )
+                        ?>
+                </div>
+                <div class="horse-name">
+                    <?= Html::encode($horse->name) ?>
+                </div>
             </div>
         </div>
     <?php endforeach; ?>

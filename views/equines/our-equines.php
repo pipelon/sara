@@ -31,6 +31,22 @@ $this->registerJsFile(Yii::getAlias('@web') . '/js/our-equines.js', ['depends' =
         /* ajusta al ancho que quieras */
         display: block;
     }
+    .nav-tabs#horseTabs .nav-link {
+        background-color: #eaeaea;
+        border-radius: 5px !important;
+        padding: 5px 10px !important;
+        font-size: 14px !important;
+        margin: 0 5px;
+        color: black;
+    }
+
+    .nav-tabs#horseTabs .nav-link.active {
+        background-color: #be2e1d;
+        color: white !important;
+    }
+    .horse-card .widget-user-username{
+        color: #be2e1d;
+    }
 </style>
 <div class="container-fluid">
     <div class="row">
@@ -61,7 +77,7 @@ $this->registerJsFile(Yii::getAlias('@web') . '/js/our-equines.js', ['depends' =
                     <div class="row">
                         <?php foreach ($model as $key => $value): ?>
                             <div
-                                class="col-md-3 horse-card <?= preg_replace('/\s+/', '-', strtolower($value->gender)) ?> <?= preg_replace('/\s+/', '-', strtolower($value->gait->name)) ?>">
+                                class="col-md-2 horse-card <?= preg_replace('/\s+/', '-', strtolower($value->gender)) ?> <?= preg_replace('/\s+/', '-', strtolower($value->gait->name)) ?>">
                                 <!-- Widget: user widget style 1 -->
                                 <div class="card card-widget widget-user">
                                     <!-- Add the bg color to the header using any of the bg-* classes -->
