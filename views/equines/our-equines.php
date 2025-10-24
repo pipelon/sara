@@ -77,7 +77,7 @@ $this->registerJsFile(Yii::getAlias('@web') . '/js/our-equines.js', ['depends' =
                     <div class="row">
                         <?php foreach ($model as $key => $value): ?>
                             <div
-                                class="col-md-2 horse-card <?= preg_replace('/\s+/', '-', strtolower($value->gender)) ?> <?= preg_replace('/\s+/', '-', strtolower($value->gait->name)) ?>">
+                                class="col-md-3 horse-card <?= preg_replace('/\s+/', '-', strtolower($value->gender)) ?> <?= preg_replace('/\s+/', '-', strtolower($value->gait->name)) ?>">
                                 <!-- Widget: user widget style 1 -->
                                 <div class="card card-widget widget-user">
                                     <!-- Add the bg color to the header using any of the bg-* classes -->

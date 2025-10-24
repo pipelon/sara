@@ -88,17 +88,17 @@ DROP TABLE IF EXISTS `categories`;
 
 CREATE TABLE `categories` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `name` varchar(100) NOT NULL COMMENT 'Nombre de la categoría',
-  `description` text COMMENT 'Descripción de la categoría',
+  `name` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Nombre de la categoría',
+  `description` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci COMMENT 'Descripción de la categoría',
   `active` tinyint NOT NULL COMMENT 'Activo',
   `order` int DEFAULT NULL,
   `created` datetime NOT NULL COMMENT 'Creado',
-  `created_by` varchar(50) NOT NULL COMMENT 'Creado por',
+  `created_by` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Creado por',
   `modified` datetime NOT NULL COMMENT 'Modificado',
-  `modified_by` varchar(50) NOT NULL COMMENT 'Modificado por',
+  `modified_by` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Modificado por',
   PRIMARY KEY (`id`),
   KEY `idx_categories_active` (`active`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Tabla de categorías de caballos';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci COMMENT='Tabla de categorías de caballos';
 
 /*Data for the table `categories` */
 
@@ -115,9 +115,9 @@ CREATE TABLE `equine_variable_values` (
   `variable_id` int NOT NULL COMMENT 'Variable',
   `active` tinyint NOT NULL COMMENT 'Activo',
   `created` datetime NOT NULL COMMENT 'Creado',
-  `created_by` varchar(50) NOT NULL COMMENT 'Creado por',
+  `created_by` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Creado por',
   `modified` datetime NOT NULL COMMENT 'Modificado',
-  `modified_by` varchar(50) NOT NULL COMMENT 'Modificado por',
+  `modified_by` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Modificado por',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_equine_subcategory` (`equine_id`,`subcategory_id`),
   KEY `fk_ev_variable` (`variable_id`),
@@ -127,7 +127,7 @@ CREATE TABLE `equine_variable_values` (
   CONSTRAINT `fk_ev_equine` FOREIGN KEY (`equine_id`) REFERENCES `equines` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_ev_subcategory` FOREIGN KEY (`subcategory_id`) REFERENCES `subcategories` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_ev_variable` FOREIGN KEY (`variable_id`) REFERENCES `variables` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 /*Data for the table `equine_variable_values` */
 
@@ -140,29 +140,29 @@ DROP TABLE IF EXISTS `equines`;
 CREATE TABLE `equines` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `gait_id` int NOT NULL COMMENT 'Marcha',
-  `name` varchar(100) NOT NULL COMMENT 'Nombre',
-  `gender` varchar(20) NOT NULL COMMENT 'Género',
+  `name` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Nombre',
+  `gender` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Género',
   `age` int NOT NULL COMMENT 'Edad',
-  `location` text COMMENT 'Ubicación',
-  `color` varchar(50) NOT NULL COMMENT 'Color',
-  `stud_farm` varchar(200) DEFAULT NULL COMMENT 'Criadero',
-  `vet` varchar(200) DEFAULT NULL COMMENT 'Veterinario',
-  `colletion_days` varchar(200) DEFAULT NULL COMMENT 'Días de colecta',
-  `about_me` text NOT NULL COMMENT 'Acerca de mí',
-  `history` text NOT NULL COMMENT 'Mi Historia',
-  `image_ppal` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Imagen principal',
-  `images` text COMMENT 'Imágenes',
-  `owner` varchar(200) DEFAULT NULL COMMENT 'Propietario',
+  `location` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci COMMENT 'Ubicación',
+  `color` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Color',
+  `stud_farm` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT 'Criadero',
+  `vet` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT 'Veterinario',
+  `colletion_days` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT 'Días de colecta',
+  `about_me` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Acerca de mí',
+  `history` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Mi Historia',
+  `image_ppal` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT 'Imagen principal',
+  `images` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci COMMENT 'Imágenes',
+  `owner` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT 'Propietario',
   `active` tinyint NOT NULL COMMENT 'Activo',
   `created` datetime NOT NULL COMMENT 'Creado',
-  `created_by` varchar(50) NOT NULL COMMENT 'Creado por',
+  `created_by` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Creado por',
   `modified` datetime NOT NULL COMMENT 'Modificado',
-  `modified_by` varchar(50) NOT NULL COMMENT 'Modificado por',
+  `modified_by` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Modificado por',
   PRIMARY KEY (`id`),
   KEY `FK_equines_gaits` (`gait_id`),
   KEY `idx_equines_active_gender_gait` (`active`,`gender`,`gait_id`),
   CONSTRAINT `FK_equines_gaits` FOREIGN KEY (`gait_id`) REFERENCES `menu` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 /*Data for the table `equines` */
 
@@ -174,14 +174,14 @@ DROP TABLE IF EXISTS `gaits`;
 
 CREATE TABLE `gaits` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Id',
-  `name` varchar(100) NOT NULL COMMENT 'Modalidad',
+  `name` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Modalidad',
   `created` datetime NOT NULL COMMENT 'Creado',
-  `created_by` varchar(50) NOT NULL COMMENT 'Creado por',
+  `created_by` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Creado por',
   `modified` datetime NOT NULL COMMENT 'Modificado',
-  `modified_by` varchar(50) NOT NULL COMMENT 'Modificado por',
+  `modified_by` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Modificado por',
   PRIMARY KEY (`id`),
   KEY `idx_gaits_name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 /*Data for the table `gaits` */
 
@@ -212,10 +212,10 @@ insert  into `menu`(`id`,`name`,`parent`,`route`,`order`,`data`) values (1,'Conf
 DROP TABLE IF EXISTS `migration`;
 
 CREATE TABLE `migration` (
-  `version` varchar(180) NOT NULL,
+  `version` varchar(180) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `apply_time` int DEFAULT NULL,
   PRIMARY KEY (`version`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 /*Data for the table `migration` */
 
@@ -227,8 +227,8 @@ DROP TABLE IF EXISTS `sara_search_history`;
 
 CREATE TABLE `sara_search_history` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `created_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Creado por',
-  `nombre_yegua` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Nombre de la Yegua',
+  `created_by` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT 'Creado por',
+  `nombre_yegua` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Nombre de la Yegua',
   `gait_id` int DEFAULT NULL COMMENT 'Andar',
   `variables` json NOT NULL COMMENT 'Variables selccionadas',
   `chk` json NOT NULL COMMENT 'Mejoramiento seleccionado',
@@ -236,7 +236,7 @@ CREATE TABLE `sara_search_history` (
   PRIMARY KEY (`id`),
   KEY `FK_sara_search_history_gaits` (`gait_id`),
   CONSTRAINT `FK_sara_search_history_gaits` FOREIGN KEY (`gait_id`) REFERENCES `gaits` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 /*Data for the table `sara_search_history` */
 
@@ -249,17 +249,17 @@ DROP TABLE IF EXISTS `subcategories`;
 CREATE TABLE `subcategories` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `category_id` int NOT NULL COMMENT 'Categoría',
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Nombre',
-  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'Descripción',
+  `name` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Nombre',
+  `description` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci COMMENT 'Descripción',
   `active` tinyint NOT NULL COMMENT 'Activo',
   `created` datetime NOT NULL COMMENT 'Creado',
-  `created_by` varchar(50) NOT NULL COMMENT 'Creado por',
+  `created_by` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Creado por',
   `modified` datetime NOT NULL COMMENT 'Modificado',
-  `modified_by` varchar(50) NOT NULL COMMENT 'Modificado por',
+  `modified_by` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Modificado por',
   PRIMARY KEY (`id`),
   KEY `idx_subcategories_category` (`category_id`),
   CONSTRAINT `fk_subcategories_category` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 /*Data for the table `subcategories` */
 
@@ -290,17 +290,17 @@ DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `name` varchar(100) NOT NULL COMMENT 'Nombre',
-  `username` varchar(45) NOT NULL COMMENT 'Usuario',
-  `password` varchar(100) NOT NULL COMMENT 'Clave',
-  `email` varchar(100) NOT NULL COMMENT 'Correo electrónico',
+  `name` varchar(100) CHARACTER SET utf8mb3 NOT NULL COMMENT 'Nombre',
+  `username` varchar(45) CHARACTER SET utf8mb3 NOT NULL COMMENT 'Usuario',
+  `password` varchar(100) CHARACTER SET utf8mb3 NOT NULL COMMENT 'Clave',
+  `email` varchar(100) CHARACTER SET utf8mb3 NOT NULL COMMENT 'Correo electrónico',
   `active` tinyint(1) NOT NULL COMMENT 'Activo',
   `created` datetime NOT NULL COMMENT 'Creado',
-  `created_by` varchar(45) NOT NULL COMMENT 'Creado por',
+  `created_by` varchar(45) CHARACTER SET utf8mb3 NOT NULL COMMENT 'Creado por',
   `modified` datetime NOT NULL COMMENT 'Modificado',
-  `modified_by` varchar(45) NOT NULL COMMENT 'Modificado por',
+  `modified_by` varchar(45) CHARACTER SET utf8mb3 NOT NULL COMMENT 'Modificado por',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 /*Data for the table `users` */
 
@@ -313,18 +313,18 @@ DROP TABLE IF EXISTS `variables`;
 CREATE TABLE `variables` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `subcategory_id` int NOT NULL COMMENT 'Subcategoría',
-  `name` varchar(100) NOT NULL COMMENT 'Nombre',
-  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'Descripción',
-  `value` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Valor',
+  `name` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Nombre',
+  `description` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci COMMENT 'Descripción',
+  `value` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Valor',
   `active` tinyint NOT NULL COMMENT 'Activo',
   `created` datetime NOT NULL COMMENT 'Creado',
-  `created_by` varchar(50) NOT NULL COMMENT 'Creado por',
+  `created_by` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Creado por',
   `modified` datetime NOT NULL COMMENT 'Modificado',
-  `modified_by` varchar(50) NOT NULL COMMENT 'Modificado por',
+  `modified_by` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Modificado por',
   PRIMARY KEY (`id`),
   KEY `idx_variables_subcat_value` (`subcategory_id`,`value`),
   CONSTRAINT `fk_variables_subcategory` FOREIGN KEY (`subcategory_id`) REFERENCES `subcategories` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 /*Data for the table `variables` */
 
