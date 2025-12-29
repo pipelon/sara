@@ -1,112 +1,194 @@
 .labelVariableRange {
-  font-size: 12px;
+    font-size: 12px;
 }
 
 .form-group.variable {
-  margin-bottom: 3rem;
+    margin-bottom: 3rem;
 }
 
 .h5subtitu::after {
-  content: "";
-  display: block;
-  position: relative;
-  width: 5%;
-  height: 3px;
-  background: #be132d;
+    content: "";
+    display: block;
+    position: relative;
+    width: 5%;
+    height: 3px;
+    background: #be132d;
 }
 
 .h5subtitu.margin-space {
-  margin: 30px 0;
+    margin: 30px 0;
 }
 
 .sara-tab a.nav-link {
-  color: #495057;
+    color: #495057;
 }
 
 .sara-tab a.nav-link.active {
-  color: #be132d;
+    color: #be132d;
 }
 
 .compare-table,
 .table-result-sara {
-  border-collapse: collapse;
-  width: 100%;
-  text-align: center;
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
 }
 
 .compare-table th,
 .compare-table td,
 .table-result-sara td,
 .table-result-sara th {
-  padding: 15px;
-  vertical-align: middle;
+    padding: 15px;
+    vertical-align: middle;
 }
 
 .table-result-sara td i {
-  font-size: 25px;
+    font-size: 25px;
 }
 
 table.table-result-sara td:first-child,
 table.table-result-sara th:first-child {
-  border-right: 10px solid #dee2e6;
+    border-right: 10px solid #dee2e6;
 }
 
 table.table-result-sara thead th:first-child {
-  background: black;
-  vertical-align: middle;
-  color: white;
+    background: black;
+    vertical-align: middle;
+    color: white;
 }
 
 .table.table-result-sara thead th:first-child span::after {
-  content: "";
-  display: block;
-  position: relative;
-  width: 100%;
-  height: 3px;
-  background: #be132d;
+    content: "";
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 3px;
+    background: #be132d;
 }
 
 [data-horse-detail] {
-  display: none;
+    display: none;
 }
 
 .horse-found {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .horse-found .horse-card {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  border: 2px solid #be132d;
-  border-radius: 12px;
-  padding: 6px 10px;
-  width: 100%;
-  /* ocupa todo el ancho del contenedor */
-  background-color: #fff;
-  gap: 8px;
-  box-sizing: border-box;
-  margin-bottom: 10px;
-  overflow: hidden;
-  /* importante para el ellipsis */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border: 2px solid #be132d;
+    border-radius: 12px;
+    padding: 6px 10px;
+    width: 100%;
+    /* ocupa todo el ancho del contenedor */
+    background-color: #fff;
+    gap: 8px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    overflow: hidden;
+    /* importante para el ellipsis */
 }
 
 .horse-found .horse-card .horse-img {
-  object-fit: cover;
-  /* mantiene proporción de la imagen */
-  flex-shrink: 0;
-  /* evita que la imagen se deforme si el texto es largo */
-  overflow: hidden;
+    object-fit: cover;
+    /* mantiene proporción de la imagen */
+    flex-shrink: 0;
+    /* evita que la imagen se deforme si el texto es largo */
+    overflow: hidden;
 }
 
 .horse-found .horse-card .horse-name {
-  font-size: 14px;
-  font-weight: 600;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    white-space: nowrap;
+    /* evita el salto de línea */
+    overflow: hidden;
+    /* oculta el texto que se desborda */
+    text-overflow: ellipsis;
+    /* muestra los tres puntos (…) */
+}
+
+.card-body.is-mobile {
+    padding: 2px 10px 2px 2px !important;
+}
+
+.card-body.is-mobile a.nav-link {
+    padding: 5px;
+    font-size: 12px;
+}
+/* ==============================
+   MOBILE RANGE FIX (Bootstrap)
+   ============================== */
+
+.card-body.is-mobile .custom-range {
+  -webkit-appearance: none;
+  appearance: none;
+
+  /* Aumentamos la altura del input para evitar clipping */
+  height: 3rem;
+}
+
+/* ---------- TRACK ---------- */
+.card-body.is-mobile .custom-range::-webkit-slider-runnable-track {
+  height: 0.5rem;
+}
+
+.card-body.is-mobile .custom-range::-moz-range-track {
+  height: 0.5rem;
+}
+
+.card-body.is-mobile .custom-range::-ms-track {
+  height: 0.5rem;
+}
+
+/* ---------- THUMB ---------- */
+/* Chrome / Safari / Edge */
+.card-body.is-mobile .custom-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+
+  width: 2rem;
+  height: 2rem;
+
+  /* 👈 CLAVE: recalcular el centrado */
+  margin-top: calc((0.5rem - 2rem) / 2);
+
+  border-radius: 50%;
+}
+
+/* Firefox */
+.card-body.is-mobile .custom-range::-moz-range-thumb {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+}
+
+/* Edge antiguo / IE */
+.card-body.is-mobile .custom-range::-ms-thumb {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+}
+
+/* ==============================
+   RANGE LABEL MOBILE
+   ============================== */
+
+/* Ocultar labels originales */
+.card-body.is-mobile .labelVariableRange {
+  display: none;
+}
+
+/* Texto dinámico */
+.card-body.is-mobile .range-value-label {
+  margin-top: 0.75rem;
+  text-align: center;
   color: #333;
-  white-space: nowrap;
-  /* evita el salto de línea */
-  overflow: hidden;
-  /* oculta el texto que se desborda */
-  text-overflow: ellipsis;
-  /* muestra los tres puntos (…) */
+}
+
+
+.horse-found.selected .horse-card{
+    background-color: #E6E3E3;
 }

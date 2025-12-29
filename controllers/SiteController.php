@@ -70,6 +70,15 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
+    public function beforeAction($action)
+    {
+        if ($action->id === 'login') {
+            $this->enableCsrfValidation = false;
+        }
+
+        return parent::beforeAction($action);
+    }
+
     /**
      * Login action.
      *

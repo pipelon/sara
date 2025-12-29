@@ -80,6 +80,7 @@ jQuery("document").ready(function () {
   });
 
   $(".horse-found").on("click", function() {
+    const $card = $(this);
     const horseName = $(this).data("horse"); // e.g. "Rastastas"
     
     // selecciona todos los elementos con ese data-horse-detail
@@ -87,6 +88,50 @@ jQuery("document").ready(function () {
     
     // alterna su visibilidad
     $col.toggle();
+    
+    // alternar clase visual
+    $card.toggleClass("selected");
   });
+  
+   /* =====================================
+     RANGE LABEL DINÁMICO (MOBILE ONLY)
+     ===================================== */
+
+  // Solo si estamos en versión móvil
+  if (jQuery(".card-body.is-mobile").length) {
+
+    jQuery(".form-group.variable").each(function () {
+      const $group = jQuery(this);
+      const $range = $group.find('input[type="range"]');
+      const $labels = $group.find(".labelVariableRange");
+
+      if (!$range.length || !$labels.length) return;
+
+      // Evitar duplicar si ya existe
+      if ($group.find(".range-value-label").length) return;
+
+      // Crear label dinámico
+      const $valueLabel = jQuery('<div class="range-value-label"></div>');
+      $group.append($valueLabel);
+
+      const min = parseInt($range.attr("min"));
+
+      function updateRangeLabel() {
+        const value = parseInt($range.val());
+        const index = value - min;
+
+        if ($labels.eq(index).length) {
+          $valueLabel.text($labels.eq(index).text());
+        }
+      }
+
+      // Inicial
+      updateRangeLabel();
+
+      // Escuchar cambios
+      $range.on("input change", updateRangeLabel);
+    });
+
+  }
 
 });

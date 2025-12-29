@@ -15,6 +15,10 @@ $this->registerJsFile(Yii::getAlias('@web') . '/js/sara.js', ['depends' => [yii\
 
 //ARCHIVO CON EL CSS
 $this->registerCssFile(Yii::getAlias('@web') . '/css/result-sara.css');
+
+// ESTAMOS DESDE UN MOVIL?
+$ua = Yii::$app->request->userAgent;
+$isMobile = preg_match('/android|iphone|ipad|ipod|mobile/i', $ua);
 ?>
 
 <div class="container-fluid">
@@ -38,7 +42,7 @@ $this->registerCssFile(Yii::getAlias('@web') . '/css/result-sara.css');
         <div class="card-header">
             <h3 class="card-title">Variables</h3>
         </div>
-        <div class="card-body">
+        <div class="card-body <?= $isMobile ? "is-mobile" : ""; ?>">
             <?=
                 $this->render('_variables', ['model' => $model, 'form' => $form])
                 ?>

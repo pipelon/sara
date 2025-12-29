@@ -6,8 +6,7 @@ $categories = \app\models\Categories::find()->where(['active' => 1])->orderBy("o
 
 ?>
 <div class="row">
-
-    <div class="col-5 col-sm-3">
+    <div class="col-4 col-sm-3">
         <div class="nav flex-column nav-tabs h-100 sara-tab" id="vert-tabs-tab" role="tablist"
             aria-orientation="vertical">
             <a class="nav-link <?= !Yii::$app->request->post() ? 'active' : '' ?>" id="vert-tabs-home-tab"
@@ -26,7 +25,7 @@ $categories = \app\models\Categories::find()->where(['active' => 1])->orderBy("o
             </a>
         </div>
     </div>
-    <div class="col-7 col-sm-9">
+    <div class="col-8 col-sm-9">
         <div class="tab-content" id="vert-tabs-tabContent">
             <div class="tab-pane text-left fade <?= !Yii::$app->request->post() ? 'show active' : '' ?>" id="vert-tabs-home" role="tabpanel"
                 aria-labelledby="vert-tabs-home-tab">
