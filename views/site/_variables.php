@@ -11,7 +11,7 @@ $categories = \app\models\Categories::find()->where(['active' => 1])->orderBy("o
             aria-orientation="vertical">
             <a class="nav-link <?= !Yii::$app->request->post() ? 'active' : '' ?>" id="vert-tabs-home-tab"
                 data-toggle="pill" href="#vert-tabs-home" role="tab" aria-controls="vert-tabs-home"
-                aria-selected="true">¿Cómo usar S. A. R. A.?</a>
+                aria-selected="true">¿S. A. R. A.?</a>
             <?php foreach ($categories as $category): ?>
                 <?php $slugCat = Yii::$app->utils->slugify($category->name) ?>
                 <a class="nav-link" id="vert-<?= $slugCat; ?>-tab" data-toggle="pill" href="#vert-<?= $slugCat; ?>"

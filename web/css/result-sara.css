@@ -117,7 +117,13 @@ table.table-result-sara thead th:first-child {
 
 .card-body.is-mobile a.nav-link {
     padding: 5px;
-    font-size: 12px;
+    font-size: 14px;
+}
+.card-body.is-mobile .form-group.variable {
+    margin-bottom: 20px;
+}
+.card-body.is-mobile .form-group.variable > label{
+    margin-bottom: 0px;
 }
 /* ==============================
    MOBILE RANGE FIX (Bootstrap)
@@ -128,7 +134,7 @@ table.table-result-sara thead th:first-child {
   appearance: none;
 
   /* Aumentamos la altura del input para evitar clipping */
-  height: 3rem;
+  height: 2.5rem;
 }
 
 /* ---------- TRACK ---------- */
@@ -149,26 +155,26 @@ table.table-result-sara thead th:first-child {
 .card-body.is-mobile .custom-range::-webkit-slider-thumb {
   -webkit-appearance: none;
 
-  width: 2rem;
-  height: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
 
   /* 👈 CLAVE: recalcular el centrado */
-  margin-top: calc((0.5rem - 2rem) / 2);
+  margin-top: calc((0.5rem - 1.5rem) / 2);
 
   border-radius: 50%;
 }
 
 /* Firefox */
 .card-body.is-mobile .custom-range::-moz-range-thumb {
-  width: 2rem;
-  height: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
   border-radius: 50%;
 }
 
 /* Edge antiguo / IE */
 .card-body.is-mobile .custom-range::-ms-thumb {
-  width: 2rem;
-  height: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
   border-radius: 50%;
 }
 
@@ -183,9 +189,12 @@ table.table-result-sara thead th:first-child {
 
 /* Texto dinámico */
 .card-body.is-mobile .range-value-label {
-  margin-top: 0.75rem;
+  margin-top: -20px;
   text-align: center;
   color: #333;
+}
+.card-body.is-mobile .range-value-label.range-value-active {
+    color: #be132d;
 }
 
 

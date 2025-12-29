@@ -119,12 +119,18 @@ jQuery("document").ready(function () {
       function updateRangeLabel() {
         const value = parseInt($range.val());
         const index = value - min;
+        const hiddenId = $range.data("input");
+        const hiddenValue = jQuery("#" + hiddenId).val();
 
         if ($labels.eq(index).length) {
-          $valueLabel.text($labels.eq(index).text());
+          $valueLabel.text($labels.eq(index).text()).addClass("range-value-active");
+          
+          if (hiddenValue === "" || hiddenValue === "0") {
+            $valueLabel.removeClass("range-value-active");
+          }
         }
+        
       }
-
       // Inicial
       updateRangeLabel();
 
