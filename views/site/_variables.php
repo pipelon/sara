@@ -3,24 +3,23 @@
 use yii\bootstrap4\Html;
 
 $categories = \app\models\Categories::find()->where(['active' => 1])->orderBy("order ASC")->all();
-
 ?>
 <div class="row">
     <div class="col-4 col-sm-3">
         <div class="nav flex-column nav-tabs h-100 sara-tab" id="vert-tabs-tab" role="tablist"
-            aria-orientation="vertical">
+             aria-orientation="vertical">
             <a class="nav-link <?= !Yii::$app->request->post() ? 'active' : '' ?>" id="vert-tabs-home-tab"
-                data-toggle="pill" href="#vert-tabs-home" role="tab" aria-controls="vert-tabs-home"
-                aria-selected="true">¿S. A. R. A.?</a>
-            <?php foreach ($categories as $category): ?>
-                <?php $slugCat = Yii::$app->utils->slugify($category->name) ?>
+               data-toggle="pill" href="#vert-tabs-home" role="tab" aria-controls="vert-tabs-home"
+               aria-selected="true">¿S. A. R. A.?</a>
+               <?php foreach ($categories as $category): ?>
+                   <?php $slugCat = Yii::$app->utils->slugify($category->name) ?>
                 <a class="nav-link" id="vert-<?= $slugCat; ?>-tab" data-toggle="pill" href="#vert-<?= $slugCat; ?>"
-                    role="tab" aria-controls="vert-<?= $slugCat; ?>" aria-selected="false">
-                    <?= $category->name; ?>
+                   role="tab" aria-controls="vert-<?= $slugCat; ?>" aria-selected="false">
+                       <?= $category->name; ?>
                 </a>
             <?php endforeach; ?>
             <a class="nav-link <?= Yii::$app->request->post() ? 'active' : '' ?>" id="vert-tabs-mejoramiento-tab" data-toggle="pill" href="#vert-tabs-mejoramiento"
-                role="tab" aria-controls="vert-tabs-mejoramiento" aria-selected="false">
+               role="tab" aria-controls="vert-tabs-mejoramiento" aria-selected="false">
                 MEJORAMIENTO DEL REPRODUCTOR
             </a>
         </div>
@@ -28,7 +27,7 @@ $categories = \app\models\Categories::find()->where(['active' => 1])->orderBy("o
     <div class="col-8 col-sm-9">
         <div class="tab-content" id="vert-tabs-tabContent">
             <div class="tab-pane text-left fade <?= !Yii::$app->request->post() ? 'show active' : '' ?>" id="vert-tabs-home" role="tabpanel"
-                aria-labelledby="vert-tabs-home-tab">
+                 aria-labelledby="vert-tabs-home-tab">
                 <div class="description">
                     <h3 class="h3subtitu" style="font-weight: bold; font-size: 16px;"></h3>
                     <p>
@@ -108,7 +107,7 @@ $categories = \app\models\Categories::find()->where(['active' => 1])->orderBy("o
             <?php foreach ($categories as $category): ?>
                 <?php $slugCat = Yii::$app->utils->slugify($category->name) ?>
                 <div class="tab-pane fade" id="vert-<?= $slugCat; ?>" role="tabpanel"
-                    aria-labelledby="vert-<?= $slugCat; ?>-tab">
+                     aria-labelledby="vert-<?= $slugCat; ?>-tab">
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="card card-outline card-danger mb-3">
@@ -116,8 +115,8 @@ $categories = \app\models\Categories::find()->where(['active' => 1])->orderBy("o
                                     <h4 class="card-title"><?= Html::encode($category->name) ?></h4>
                                     <!--<div class="card-tools">
                                         <a href="#" class="text-danger ml-2 open-info"
-                                            data-title="<?php //= Html::encode($category->name) ?>"
-                                            data-description="<?php //= Html::encode($category->description) ?>">
+                                            data-title="<?php //= Html::encode($category->name)   ?>"
+                                            data-description="<?php //= Html::encode($category->description)   ?>">
                                             <i class="fas fa-info-circle"></i>
                                         </a>
                                     </div>-->
@@ -126,13 +125,13 @@ $categories = \app\models\Categories::find()->where(['active' => 1])->orderBy("o
                                 <div class="card-body">
                                     <?php
                                     $subcategories = \app\models\Subcategories::find()
-                                        ->where(['category_id' => $category->id, 'active' => 1])
-                                        ->all();
+                                            ->where(['category_id' => $category->id, 'active' => 1])
+                                            ->all();
 
                                     foreach ($subcategories as $subcat):
                                         $variables = \app\models\Variables::find()
-                                            ->where(['subcategory_id' => $subcat->id, 'active' => 1])
-                                            ->all();
+                                                ->where(['subcategory_id' => $subcat->id, 'active' => 1])
+                                                ->all();
 
                                         // construir opciones con índice secuencial
                                         $options = [];
@@ -151,24 +150,31 @@ $categories = \app\models\Categories::find()->where(['active' => 1])->orderBy("o
 
                                         <?php if (!empty($options)): ?>
                                             <div class="form-group variable">
-                                                <label for="customRange-<?= $customRangeId; ?>">
-                                                    <a href="#" class="text-dark ml-1 open-info"
-                                                        data-title="<?= Html::encode($subcat->name); ?>"
-                                                        data-description="<?= Html::encode($subcat->description); ?>">
-                                                        <i class="fas fa-info-circle"></i>
-                                                    </a>
-                                                    <?= Html::encode($subcat->name) ?>
-
+                                                <label for="customRange-<?= $customRangeId; ?>" class="range-label">
+                                                    <span class="range-label-left">
+                                                        <a href="#" class="text-dark ml-1 open-info"
+                                                           data-title="<?= Html::encode($subcat->name); ?>"
+                                                           data-description="<?= Html::encode($subcat->description); ?>">
+                                                            <i class="fas fa-info-circle"></i>
+                                                        </a>
+                                                        <?= Html::encode($subcat->name) ?>
+                                                    </span>
+                                                    <span class="range-label-right">
+                                                        <a href="#" class="text-dark ml-1 remove-var"
+                                                           data-input="<?= $customRangeId; ?>">
+                                                            <i class="fas fa-ban"></i>
+                                                        </a>
+                                                    </span>                                                                                                        
                                                 </label>
                                                 <input type="range" class="custom-range custom-range-danger"
-                                                    id="customRange-<?= $customRangeId; ?>" data-input="<?= $customRangeId; ?>"
-                                                    min="<?= min(array_keys($options)); ?>" max="<?= max(array_keys($options)); ?>"
-                                                    step="1" value="<?= Html::encode($model->variables[$customRangeId] ?? '') ?>">
+                                                       id="customRange-<?= $customRangeId; ?>" data-input="<?= $customRangeId; ?>"
+                                                       min="<?= min(array_keys($options)); ?>" max="<?= max(array_keys($options)); ?>"
+                                                       step="1" value="<?= Html::encode($model->variables[$customRangeId] ?? '') ?>">
 
                                                 <input type="hidden" id="<?= $customRangeId; ?>"
-                                                    name="SaraSearch[variables][<?= $customRangeId; ?>]"
-                                                    data-range="customRange-<?= $customRangeId; ?>"
-                                                    value="<?= Html::encode($model->variables[$customRangeId] ?? '') ?>">
+                                                       name="SaraSearch[variables][<?= $customRangeId; ?>]"
+                                                       data-range="customRange-<?= $customRangeId; ?>"
+                                                       value="<?= Html::encode($model->variables[$customRangeId] ?? '') ?>">
 
                                                 <div class="d-flex justify-content-between px-1">
                                                     <?php foreach ($options as $key => $label): ?>
@@ -183,23 +189,23 @@ $categories = \app\models\Categories::find()->where(['active' => 1])->orderBy("o
                         </div>
                         <div class="col-sm-6">
                             <?=
-                                Html::img(
+                            Html::img(
                                     "@web/images/variable.jpg",
                                     [
                                         'alt' => 'Variable',
                                         'width' => '100%'
                                     ]
-                                )
-                                ?>
+                            )
+                            ?>
                         </div>
                     </div>
                 </div>
             <?php endforeach; ?>
 
             <div class="tab-pane text-left fade <?= Yii::$app->request->post() ? 'show active' : '' ?>" id="vert-tabs-mejoramiento" role="tabpanel"
-                aria-labelledby="vert-tabs-mejoramiento-tab">
-                <?= $this->render('_mejoramiento', ['model' => $model, 'form' => $form])
-                    ?>
+                 aria-labelledby="vert-tabs-mejoramiento-tab">
+                     <?= $this->render('_mejoramiento', ['model' => $model, 'form' => $form])
+                     ?>
             </div>
         </div>
     </div>

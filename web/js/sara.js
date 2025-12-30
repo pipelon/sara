@@ -1,4 +1,5 @@
 jQuery("document").ready(function () {
+    // modal conla info de las variables
     jQuery(document).on("click", ".open-info", function (e) {
         e.preventDefault();
         var title = $(this).data("title");
@@ -6,6 +7,16 @@ jQuery("document").ready(function () {
         $("#infoModalTitle").text(title);
         $("#infoModalDescription").html(description); // usa .text() si quieres evitar HTML
         $("#infoModal").modal("show");
+    });
+
+    // remover variable seleccionada
+    jQuery(document).on("click", ".remove-var", function (e) {
+        e.preventDefault();
+        const idHidden = jQuery(this).data("input");
+        jQuery("#" + idHidden).val("");
+        jQuery("#customRange-" + idHidden).val("");
+        jQuery("#chk-" + idHidden).prop('checked', false);
+        jQuery("#chk-" + idHidden).prop("disabled", true);        
     });
 
     // deshabilitar todos los checks al inicio
@@ -33,6 +44,7 @@ jQuery("document").ready(function () {
         var $hidden = jQuery(this);
         var sliderId = $hidden.data("range"); // ej: range-geometria-figura
         var val = $hidden.val();
+        console.log("val", val);
         if (val !== "") {
             jQuery("#" + sliderId).val(val); // mover el slider a ese valor
             var key = $hidden.attr("id");
